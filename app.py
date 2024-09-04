@@ -40,3 +40,18 @@ def oak():
     </body>
 </html>
 '''
+
+count = 0
+@app.route('/lab1/counter')
+def counter():
+    global count
+    count += 1
+    return '''
+<!doctype html>
+<html>
+    <body>
+        <h1>Счётчик</h1>
+        <p>Сколько раз вы заходили на эту страницу: ''' + str(count) + '''</p>
+    </body>
+</html>
+'''
