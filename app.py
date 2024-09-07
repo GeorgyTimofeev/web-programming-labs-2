@@ -6,6 +6,28 @@ app = Flask(__name__)
 def not_found(err):
     return "Такой страницы не существует", 404
 
+@app.route('/')
+@app.route('/index')
+def index():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <tytle>НГТУ, ФБ, Лабораторные работы</tytle>
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+    </head>
+    <body>
+        <header>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</header>
+        <ol>
+            <li><a href="/lab1">Первая Лабораторная</a></li>
+        </ol>
+    </body>
+    <footer>
+        Тимофеев Георгий Алексеевич, ФБИ-22, 3 Курс, 2024 год.
+    </footer>
+</html>
+'''
+
 @app.route('/lab1/web')
 def web():
     return '''<!doctype html>
