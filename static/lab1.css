@@ -11,3 +11,13 @@ img {
     height: auto;
     border-radius: 20px;
 }
+
+a {
+    color: rgb(88, 98, 84);
+    text-decoration: underline;
+}
+
+a:hover {
+    color: rgb(88, 98, 84);
+    font-weight: bold;
+}
