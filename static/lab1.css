@@ -1,0 +1,13 @@
+body {
+    background-color: rgb(251, 249, 246);
+    color: rgb(88, 98, 84);
+    font-family: Helvetica;
+    margin: 50px;
+    padding: 0px;
+}
+
+img {
+    width: 500px;
+    height: auto;
+    border-radius: 20px;
+}
