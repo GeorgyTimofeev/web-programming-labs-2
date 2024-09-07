@@ -1,4 +1,5 @@
 from flask import Flask, url_for, redirect
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
@@ -13,7 +14,11 @@ def unauthorized(err):
     return '''Для доступа к ресурсу требуется аутентификация.
     Клиент должен передать заголовок Authorization в запросе.''', 401
 
-@app.errorhandler(402)
+class PaymentRequired(HTTPException):
+    code = 402
+    description = 'Payment Required'
+
+@app.errorhandler(PaymentRequired)
 def payment_required(err):
     return '''Зарезервировано для будущего использования.
     Используется для целей тестирования оплаты.''', 402
@@ -25,7 +30,21 @@ def forbidden(err):
 
 @app.errorhandler(404)
 def not_found(err):
-    return "Такой страницы не существует", 404
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <tytle>Ошибка 404</tytle>
+    </head>
+    <body>
+        <h1>Упс… Кажется такой страницы не существует</h1>
+        <p>Сервер не может найти запрошенный ресурс. В браузере это означает,
+        что URL-адрес не распознан. В API это также может означать,
+        что адрес правильный, но ресурс не существует.</p>
+        <a href="/">Вернуться на главную</a>
+    </body>
+''', 404
 
 @app.errorhandler(405)
 def method_not_allowed(err):
