@@ -1,18 +1,27 @@
-from flask import Flask, url_for, redirect
+from flask import Flask, url_for, redirect, abort
 from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
 @app.errorhandler(400)
 def bad_request(err):
-    return '''Неверный запрос. Сервер не может или не будет обрабатывать запрос из-за чего-то,
+    return '''Ошибка 400.
+    Неверный запрос. Сервер не может или не будет обрабатывать запрос из-за чего-то,
     что воспринимается как ошибка клиента (например, неправильный синтаксис, формат
     или маршрутизация запроса).''', 400
 
+@app.route('/lab1/trigger_400')
+def trigger_400():
+    abort(400)
+
 @app.errorhandler(401)
 def unauthorized(err):
-    return '''Для доступа к ресурсу требуется аутентификация.
+    return '''Ошибка 401. Для доступа к ресурсу требуется аутентификация.
     Клиент должен передать заголовок Authorization в запросе.''', 401
+
+@app.route('/lab1/trigger_401')
+def trigger_401():
+    abort(401)
 
 class PaymentRequired(HTTPException):
     code = 402
@@ -20,13 +29,21 @@ class PaymentRequired(HTTPException):
 
 @app.errorhandler(PaymentRequired)
 def payment_required(err):
-    return '''Зарезервировано для будущего использования.
+    return '''Ошибка 402. Зарезервировано для будущего использования.
     Используется для целей тестирования оплаты.''', 402
+
+@app.route('/lab1/trigger_402')
+def trigger_402():
+    abort(402)
 
 @app.errorhandler(403)
 def forbidden(err):
-    return '''Клиент не имеет прав доступа к содержимому,
+    return '''Ошибка 403. Клиент не имеет прав доступа к содержимому,
     поэтому сервер отказывает в выполнении запроса.''', 403
+
+@app.route('/lab1/trigger_403')
+def trigger_403():
+    abort(403)
 
 @app.errorhandler(404)
 def not_found(err):
@@ -50,15 +67,27 @@ def not_found(err):
     </body>
 ''', 404
 
+@app.route('/lab1/trigger_404')
+def trigger_404():
+    abort(404)
+
 @app.errorhandler(405)
 def method_not_allowed(err):
-    return '''Метод, указанный в запросе (например, POST, PUT, DELETE) не применим к ресурсу,
+    return '''Ошибка 405. Метод, указанный в запросе (например, POST, PUT, DELETE) не применим к ресурсу,
     и сервер не поддерживает его.''', 405
+
+@app.route('/lab1/trigger_405')
+def trigger_405():
+    abort(405)
 
 @app.errorhandler(418)
 def i_am_a_teapot(err):
-    return '''Определенный в RFC 2324. Этот код составляет часть
+    return '''Ошибка 418. Я… я – чай? Определенный в RFC 2324. Этот код составляет часть
     апрельской шутки и не должен использоваться для серьезных целей.''', 418
+
+@app.route('/lab1/trigger_418')
+def trigger_418():
+    abort(418)
 
 @app.errorhandler(500)
 def internal_server_error(err):
@@ -80,6 +109,10 @@ def internal_server_error(err):
     </body>
 </html>
 ''', 500
+
+@app.route('/lab1/trigger_500')
+def trigger_500():
+    abort(500)
 
 @app.route('/lab1/an_error')
 def make_an_error():
@@ -125,20 +158,37 @@ def lab1():
 
         <a href="/">Назад на главную</a></li>
 
-        <h2>Список rout'ов:</h2>
-        <ol>
-            <li><a href="/index">/index</a></li>
-            <li><a href="/lab1">/lab1</a></li>
-            <li><a href="/lab1/web">/lab1/web</a></li>
-            <li><a href="/lab1/info">/lab1/info</a></li>
-            <li><a href="/lab1/author">/lab1/author</a></li>
-            <li><a href="/lab1/oak">/lab1/oak</a></li>
-            <li><a href="/lab1/counter">/lab1/counter</a></li>
-            <li><a href="/lab1/counter_cleaner">/lab1/counter_cleaner</a></li>
-            <li><a href="/lab1/an_error">/lab1/an_error</a></li>
-            <li><a href="/lab1/created">/lab1/created</a></li>
-            <li><a href="/lab1/new_route">/lab1/new_route</a></li>
-        </ol>
+        <div class="container" style='display: flex; justify-content: space-between;'>
+            <div class="rout_list" style='width: 30%; margin-left: 5px'>
+                <h2>Список rout'ов:</h2>
+                <ol>
+                    <li><a href="/index">/index</a></li>
+                    <li><a href="/lab1">/lab1</a></li>
+                    <li><a href="/lab1/web">/lab1/web</a></li>
+                    <li><a href="/lab1/info">/lab1/info</a></li>
+                    <li><a href="/lab1/author">/lab1/author</a></li>
+                    <li><a href="/lab1/oak">/lab1/oak</a></li>
+                    <li><a href="/lab1/counter">/lab1/counter</a></li>
+                    <li><a href="/lab1/counter_cleaner">/lab1/counter_cleaner</a></li>
+                    <li><a href="/lab1/an_error">/lab1/an_error</a></li>
+                    <li><a href="/lab1/created">/lab1/created</a></li>
+                    <li><a href="/lab1/new_route">/lab1/new_route</a></li>
+                </ol>
+            </div>
+
+            <div class="error_list" style='width: 68%;'>
+                <h2>Список ошибок:</h2>
+                <ol>
+                    <li><a href="/lab1/trigger_400">400</a></li>
+                    <li><a href="/lab1/trigger_401">401</a></li>
+                    <li><a href="/lab1/trigger_403">403</a></li>
+                    <li><a href="/lab1/trigger_404">404</a></li>
+                    <li><a href="/lab1/trigger_405">405</a></li>
+                    <li><a href="/lab1/trigger_418">418</a></li>
+                    <li><a href="/lab1/trigger_500">500</a></li>
+                </ol>
+            </div>
+        </div>
     </body>
     <footer>
         Тимофеев Георгий Алексеевич, ФБИ-22, 3 Курс, 2024 год.
