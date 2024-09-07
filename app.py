@@ -42,6 +42,10 @@ def not_found(err):
         <p>Сервер не может найти запрошенный ресурс. В браузере это означает,
         что URL-адрес не распознан. В API это также может означать,
         что адрес правильный, но ресурс не существует.</p>
+
+        <img src="''' + url_for('static', filename='Error_404_img.png') + '''" style="width: 300px;
+        position: absolute; top: 60%; right: 50px; transform: translateY(-50%);"></br>
+
         <a href="/">Вернуться на главную</a>
     </body>
 ''', 404
@@ -55,6 +59,28 @@ def method_not_allowed(err):
 def i_am_a_teapot(err):
     return '''Определенный в RFC 2324. Этот код составляет часть
     апрельской шутки и не должен использоваться для серьезных целей.''', 418
+
+@app.errorhandler(500)
+def internal_server_error(err):
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <tytle>Ошибка 500</tytle>
+    </head>
+    <body>
+        <h1>Внутренняя ошибка сервера</h1>
+        <p>На сервере произошла ошибка, в результате которой он не может успешно обработать запрос.
+        Пожалуйста, попробуйте позже.</p>
+        <a href="/">Вернуться на главную</a>
+    </body>
+</html>
+''', 500
+
+@app.route('/lab1/an_error')
+def make_an_error():
+    return 1 / 0
 
 @app.route('/')
 @app.route('/index')
