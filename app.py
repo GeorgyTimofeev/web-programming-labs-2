@@ -73,6 +73,9 @@ def internal_server_error(err):
         <h1>Внутренняя ошибка сервера</h1>
         <p>На сервере произошла ошибка, в результате которой он не может успешно обработать запрос.
         Пожалуйста, попробуйте позже.</p>
+
+        <img src="''' + url_for('static', filename='Error_500_img.png') + '''" style="width: 300px;
+        position: absolute; top: 50%; right: 100px; transform: translateY(-50%);"></br>
         <a href="/">Вернуться на главную</a>
     </body>
 </html>
@@ -121,6 +124,21 @@ def lab1():
         сознательно предоставляющих лишь самые базовые возможности.</p>
 
         <a href="/">Назад на главную</a></li>
+
+        <h2>Список rout'ов:</h2>
+        <ol>
+            <li><a href="/index">/index</a></li>
+            <li><a href="/lab1">/lab1</a></li>
+            <li><a href="/lab1/web">/lab1/web</a></li>
+            <li><a href="/lab1/info">/lab1/info</a></li>
+            <li><a href="/lab1/author">/lab1/author</a></li>
+            <li><a href="/lab1/oak">/lab1/oak</a></li>
+            <li><a href="/lab1/counter">/lab1/counter</a></li>
+            <li><a href="/lab1/counter_cleaner">/lab1/counter_cleaner</a></li>
+            <li><a href="/lab1/an_error">/lab1/an_error</a></li>
+            <li><a href="/lab1/created">/lab1/created</a></li>
+            <li><a href="/lab1/new_route">/lab1/new_route</a></li>
+        </ol>
     </body>
     <footer>
         Тимофеев Георгий Алексеевич, ФБИ-22, 3 Курс, 2024 год.
