@@ -223,3 +223,56 @@ def created():
     </body>
 </html>
 ''', 201
+
+@app.route('/lab1/new_route')
+def new_route():
+    return '''
+<!doctype html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <tytle>Sigmaringen Castle</tytle>
+    </head>
+    <body>
+        <p>From Wikipedia, the free encyclopedia</p>
+        <div class="text_container" style='width: 50%'>
+            <p style='margin-top: 10px'><b>Sigmaringen Castle</b> (German: Schloss Sigmaringen) was the princely castle and seat
+            of government for the Princes of Hohenzollern-Sigmaringen. Situated in the Swabian Alb region
+            of Baden-Württemberg, Germany, this castle dominates the skyline of the town of Sigmaringen.
+            The castle was rebuilt following a fire in 1893, and only the towers of the earlier medieval
+            fortress remain. Schloss Sigmaringen was a family estate of the Swabian Hohenzollern family,
+            a cadet branch of the Hohenzollern family, from which the German Emperors and kings of
+            Prussia came. During the closing months of World War II, Schloss Sigmaringen was briefly
+            the seat of the Vichy French Government after France was liberated by the Allies.
+            The castle and museums may be visited throughout the year, but only on guided tours.
+            It is still owned by the Hohenzollern-Sigmaringen family, although they
+            no longer reside there.</p>
+
+            <h1>Location</h1>
+            <p>Sigmaringen is located on the southern edge of the Swabian Jura,
+            a plateau region in southern Baden-Württemberg. The Hohenzollern
+            castle was built below the narrow Danube river valley in the modern
+            Upper Danube Nature Park (German: Naturpark Obere Donau). The castle
+            rises above the Danube on a towering chalk projection that is a spur of
+            the white Jura Mountains formation. The hill is known simply as the
+            Schlossberg or Castle Rock. The Schlossberg is about 200 meters (660 ft)
+            long and up to 35 meters (115 ft) above the river. On this free-standing
+            towering rock, the princely Hohenzollern castle is the largest of the Danube
+            valley castles. The sheer cliffs and steep sides of the tower made it a
+            natural site for a well-protected medieval castle.</p>
+
+            <a href="/lab1">Назад на страницу лабораторной</a>
+        </div>
+
+        <div class="image_container" style='position: absolute; right: 50px; top: 10%'>
+            <img src="''' + url_for('static', filename='Sigmaringen_Castle.jpeg') + '''"></br>
+            <img src="''' + url_for('static', filename='Sigmaringen_Castle_2.jpeg') + '''" style='margin-top: 10px'>
+        </div>
+    </body>
+    <footer>Тимофеев Георгий Алексеевич, ФБИ-22, 3 Курс, 2024 год.</footer>
+</html>
+''', 200, {
+    'Content-Language': 'en',
+    'X-Nerd': '42',
+    'X-Student': 'Timofeev Georgy'
+}
