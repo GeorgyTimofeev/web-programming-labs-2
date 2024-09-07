@@ -2,9 +2,40 @@ from flask import Flask, url_for, redirect
 
 app = Flask(__name__)
 
+@app.errorhandler(400)
+def bad_request(err):
+    return '''Неверный запрос. Сервер не может или не будет обрабатывать запрос из-за чего-то,
+    что воспринимается как ошибка клиента (например, неправильный синтаксис, формат
+    или маршрутизация запроса).''', 400
+
+@app.errorhandler(401)
+def unauthorized(err):
+    return '''Для доступа к ресурсу требуется аутентификация.
+    Клиент должен передать заголовок Authorization в запросе.''', 401
+
+@app.errorhandler(402)
+def payment_required(err):
+    return '''Зарезервировано для будущего использования.
+    Используется для целей тестирования оплаты.''', 402
+
+@app.errorhandler(403)
+def forbidden(err):
+    return '''Клиент не имеет прав доступа к содержимому,
+    поэтому сервер отказывает в выполнении запроса.''', 403
+
 @app.errorhandler(404)
 def not_found(err):
     return "Такой страницы не существует", 404
+
+@app.errorhandler(405)
+def method_not_allowed(err):
+    return '''Метод, указанный в запросе (например, POST, PUT, DELETE) не применим к ресурсу,
+    и сервер не поддерживает его.''', 405
+
+@app.errorhandler(418)
+def i_am_a_teapot(err):
+    return '''Определенный в RFC 2324. Этот код составляет часть
+    апрельской шутки и не должен использоваться для серьезных целей.''', 418
 
 @app.route('/')
 @app.route('/index')
