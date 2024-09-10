@@ -163,16 +163,12 @@ def lab1():
                 <h2>Список rout'ов:</h2>
                 <ol>
                     <li><a href="/index">/index</a></li>
-                    <li><a href="/lab1">/lab1</a></li>
                     <li><a href="/lab1/web">/lab1/web</a></li>
                     <li><a href="/lab1/info">/lab1/info</a></li>
-                    <li><a href="/lab1/author">/lab1/author</a></li>
                     <li><a href="/lab1/oak">/lab1/oak</a></li>
                     <li><a href="/lab1/counter">/lab1/counter</a></li>
-                    <li><a href="/lab1/counter_cleaner">/lab1/counter_cleaner</a></li>
-                    <li><a href="/lab1/an_error">/lab1/an_error</a></li>
-                    <li><a href="/lab1/created">/lab1/created</a></li>
                     <li><a href="/lab1/new_route">/lab1/new_route</a></li>
+                    <li><a href="/lab1/resource">/lab1/resource (дополнительное задание)</a></li>
                 </ol>
             </div>
 
@@ -277,20 +273,112 @@ def counter_cleaner():
 def info():
     return redirect('/lab1/author')
 
+tree_planted = False
+
+# Обработчик для главной страницы /lab1/resource, которая показывает статус ресурса
+@app.route('/lab1/resource')
+def resource_status():
+    global tree_planted
+    if tree_planted:
+        status_message = "Дерево посажено"
+        status_image = url_for('static', filename='tree_after.jpg')
+    else:
+        status_message = "Дерево не посажено"
+        status_image = url_for('static', filename='tree_before.jpg')
+
+    return f'''
+    <!doctype html>
+    <html>
+        <head>
+            <title>Состояние дерева</title>
+            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='lab1.css')}">
+        </head>
+        <body>
+            <h1>{status_message}</h1>
+            <div class="text_container" style='width: 50%'>
+                <ul>
+                    <li><a href="{url_for('created')}">Посадить дерево</a></li>
+                    <li><a href="{url_for('delete')}">Спилить дерево…</a></li>
+                </ul>
+                <a href="{url_for('lab1')}">Вернуться на страницу лабораторной</a>
+            </div>
+            <div class="image_container" style='position: absolute; right: 50px; top: 10%'>
+                <img src="{status_image}">
+            </div>
+        </body>
+    </html>
+    '''
+
+# Обработчик для создания ресурса /lab1/created
 @app.route('/lab1/created')
 def created():
-    return '''
-<!doctype html>
-<html>
-    <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
-    </head>
-    <body>
-        <h1>Создано успешно</h1>
-        <div><i>что-то создано…</i></div>
-    </body>
-</html>
-''', 201
+    global tree_planted
+    if tree_planted:
+        return '''
+        <!doctype html>
+        <html>
+            <head>
+                <title>Отказано</title>
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
+            <body style='background-image: url("''' + url_for('static', filename='big_tree.jpeg') +'''")'>
+                <h1 style='color: white; width: 50%'>Дерево уже посажено и прекрасно себя чувствует</h1>
+                <a href="/lab1/resource" style='color: white'>Вернуться к состоянию дерева</a></br>
+            </body>
+        </html>
+        ''', 400
+    else:
+        tree_planted = True
+        return '''
+        <!doctype html>
+        <html>
+            <head>
+                <title>Успешно</title>
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
+            <body>
+                <h1>Вы посадили дерево, Браво!</h1>
+                <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
+                <img src="''' + url_for('static', filename='tree_tumb_up.png') + '''" style='margin-top: 10px'>
+            </body>
+        </html>
+        ''', 201
+
+
+# Обработчик для удаления ресурса /lab1/delete
+@app.route('/lab1/delete')
+def delete():
+    global tree_planted
+    if tree_planted:
+        tree_planted = False
+        return '''
+        <!doctype html>
+        <html>
+            <head>
+                <title>Успешно</title>
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
+            <body>
+                <h1>Что вы наделали… Дерева больше нет…</h1>
+                <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
+                <img src="''' + url_for('static', filename='tree_tumb_down.png') + '''" style='margin-top: 10px'>
+            </body>
+        </html>
+        ''', 200
+    else:
+        return '''
+        <!doctype html>
+        <html>
+            <head>
+                <title>Отказано</title>
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+            </head>
+            <body style='background-image: url("''' + url_for('static', filename='no_trees_gleb.jpg') +'''"); background-size: cover; background-position: center; background-repeat: no-repeat; margin: 50px; padding: 0; height: 70vh;'>
+                <h1>Тут больше нечего пилить</h1>
+                <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
+            </body>
+        </html>
+        ''', 400
 
 @app.route('/lab1/new_route')
 def new_route():
