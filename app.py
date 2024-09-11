@@ -34,7 +34,7 @@ def payment_required(err):
 
 @app.route('/lab1/trigger_402')
 def trigger_402():
-    abort(402)
+    raise PaymentRequired()
 
 @app.errorhandler(403)
 def forbidden(err):
@@ -177,6 +177,7 @@ def lab1():
                 <ol>
                     <li><a href="/lab1/trigger_400">400</a></li>
                     <li><a href="/lab1/trigger_401">401</a></li>
+                    <li><a href="/lab1/trigger_402">402</a></li>
                     <li><a href="/lab1/trigger_403">403</a></li>
                     <li><a href="/lab1/trigger_404">404</a></li>
                     <li><a href="/lab1/trigger_405">405</a></li>
