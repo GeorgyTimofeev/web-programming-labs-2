@@ -1,14 +1,19 @@
 <!doctype html>
 <html>
     <head>
-        <title>Тимофеев Георгий. Лабораторная работа 2</title>
+        <title>{{ name }}. Лабораторная работа {{ lab_number }}</title>
         <link rel="stylesheet" type="text/css" href="../static/lab1.css" />
     </head>
     <body>
-        <header>WEB-программирование, часть 2. Лабораторная работа 2</header>
+        <header>
+            WEB-программирование, часть 2. Лабораторная работа {{ lab_number }}
+        </header>
 
         <main>Основной контент</main>
 
-        <footer>&copy; {{ name }}, ФБИ-22, 3 курс, 2024</footer>
+        <footer>
+            &copy; {{ name }}, {{ student_group }}, {{ student_course }} курс,
+            2024
+        </footer>
     </body>
 </html>
