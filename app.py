@@ -442,7 +442,7 @@ def a_no_slash():
 def a_slash():
     return 'со слешем'
 
-flower_list = ('Роза', 'Лилия', 'Тюльпан', 'Орхидея', 'Пион', 'Астра', 'Георгин', 'Хризантема', 'Гвоздика', 'Ирис')
+flower_list = ['Роза', 'Лилия', 'Тюльпан', 'Орхидея', 'Пион', 'Астра', 'Георгин', 'Хризантема', 'Гвоздика', 'Ирис']
 
 @app.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
@@ -450,3 +450,18 @@ def flowers(flower_id):
         return 'Цветок с таким id не найден', 404
     else:
         return "Цветок: " + flower_list[flower_id]
+
+@app.route('/lab2/add_flower/<name>')
+def add_flower(name):
+    flower_list.append(name)
+    return f'''
+<!doctype html>
+<html>
+    <body>
+        <h1>Добавлен новый цветок</h1>
+        <p>Теперь в списке цветков есть: {name} </p>
+        <p>Всего цветков: {len(flower_list)}</p>
+        <p>Полный список цветков: {flower_list}</p>
+    </body>
+</html>
+'''
