@@ -433,3 +433,12 @@ def new_route():
     'X-Nerd': '42',
     'X-Student': 'Timofeev Georgy'
 }
+
+
+@app.route('/lab2/a')
+def a_no_slash():
+    return 'без слеша'
+
+@app.route('/lab2/a/')
+def a_slash():
+    return 'со слешем'
