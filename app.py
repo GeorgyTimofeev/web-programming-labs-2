@@ -434,7 +434,6 @@ def new_route():
     'X-Student': 'Timofeev Georgy'
 }
 
-
 @app.route('/lab2/a')
 def a_no_slash():
     return 'без слеша'
@@ -442,3 +441,12 @@ def a_no_slash():
 @app.route('/lab2/a/')
 def a_slash():
     return 'со слешем'
+
+flower_list = ('Роза', 'Лилия', 'Тюльпан', 'Орхидея', 'Пион', 'Астра', 'Георгин', 'Хризантема', 'Гвоздика', 'Ирис')
+
+@app.route('/lab2/flowers/<int:flower_id>')
+def flowers(flower_id):
+    if flower_id >= len(flower_list):
+        return 'Цветок с таким id не найден', 404
+    else:
+        return "Цветок: " + flower_list[flower_id]
