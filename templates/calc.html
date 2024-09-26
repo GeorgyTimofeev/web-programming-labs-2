@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block lab %}Лабораторная работа 2{% endblock %} {%
+block main %}
+<h1>Операции над числами {{ num1 }} и {{ num2 }}</h1>
+<div>{{ num1 }} + {{ num2 }} = {{ num1 + num2 }}</div>
+<div>{{ num1 }} - {{ num2 }} = {{ num1 - num2 }}</div>
+<div>{{ num1 }} * {{ num2 }} = {{ num1 * num2 }}</div>
+<div>{{ num1 }} / {{ num2 }} = {{ num1 / num2 }}</div>
+<div>{{ num1 }}<sup>{{ num2 }}</sup> = {{ num1**num2 }}</div>
+{% endblock %}

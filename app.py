@@ -558,3 +558,15 @@ def lab2():
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
     return render_template('filter.html', phrase=phrase)
+
+@app.route('/lab2/calc/')
+def calc_redirect():
+    return redirect(url_for('calculate', num1=1, num2=1))
+
+@app.route('/lab2/calc/<int:num1>/<int:num2>/')
+def calculate(num1, num2):
+    return render_template('calc.html', num1=num1, num2=num2)
+
+@app.route('/lab2/calc/<int:num1>/')
+def calc_redirect_with_num1(num1):
+    return redirect(url_for('calculate', num1=num1, num2=1))
