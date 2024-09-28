@@ -570,3 +570,19 @@ def calculate(num1, num2):
 @app.route('/lab2/calc/<int:num1>/')
 def calc_redirect_with_num1(num1):
     return redirect(url_for('calculate', num1=num1, num2=1))
+
+@app.route('/lab2/books/')
+def books():
+    books_list = [
+        {'author': 'Джеймс Джойс', 'title': 'Улисс', 'genre': 'Роман', 'pages': 730},
+        {'author': 'Джек Керуак', 'title': 'В дороге', 'genre': 'Роман', 'pages': 320},
+        {'author': 'Федор Достоевский', 'title': 'Преступление и наказание', 'genre': 'Роман', 'pages': 671},
+        {'author': 'Лев Толстой', 'title': 'Война и мир', 'genre': 'Роман', 'pages': 1225},
+        {'author': 'Джордж Оруэлл', 'title': '1984', 'genre': 'Антиутопия', 'pages': 328},
+        {'author': 'Габриэль Гарсиа Маркес', 'title': 'Сто лет одиночества', 'genre': 'Магический реализм', 'pages': 417},
+        {'author': 'Фрэнсис Скотт Фицджеральд', 'title': 'Великий Гэтсби', 'genre': 'Роман', 'pages': 180},
+        {'author': 'Харпер Ли', 'title': 'Убить пересмешника', 'genre': 'Роман', 'pages': 281},
+        {'author': 'Дж. Р. Р. Толкин', 'title': 'Властелин колец', 'genre': 'Фэнтези', 'pages': 1178},
+        {'author': 'Джейн Остин', 'title': 'Гордость и предубеждение', 'genre': 'Роман', 'pages': 279}
+    ]
+    return render_template('books.html', books=books_list)
