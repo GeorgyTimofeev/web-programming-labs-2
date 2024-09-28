@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block lab %}Лабораторная работа 2{% endblock %} {%
+block main %}
+<div style="text-align: center">
+    <img
+        src="{{ url_for('static', filename='mushroom_shooting.jpg') }}"
+        alt="Mushroom Shooting"
+        style="width: 700px; height: auto"
+    />
+    <p style="text-align: center; font-size: 10px">
+        <a
+            href="https://riamo.ru/news/proisshestviya/dve-pensionerki-ustroili-perestrelku-iz-za-gribnoj-poljany-v-lesu-pod-peterburgom/"
+            >Новость: Две пенсионерки устроили перестрелку из-за грибной поляны
+            в лесу под Петербургом</a
+        >
+    </p>
+</div>
+<div class="mushrooms-info">
+    {% for mushroom in mushrooms %}
+    <div class="mushroom">
+        <h2>{{ mushroom.name }}</h2>
+        <img
+            src="{{ mushroom.image }}"
+            alt="{{ mushroom.name }}"
+            style="width: 200px; height: auto"
+        />
+        <p>{{ mushroom.description }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

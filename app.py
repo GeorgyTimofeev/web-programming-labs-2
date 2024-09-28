@@ -586,3 +586,35 @@ def books():
         {'author': 'Джейн Остин', 'title': 'Гордость и предубеждение', 'genre': 'Роман', 'pages': 279}
     ]
     return render_template('books.html', books=books_list)
+
+
+@app.route('/lab2/mushrooms/')
+def mushrooms_view():
+    mushrooms = [
+        {
+            'name': 'Белый гриб',
+            'description': 'Белый гриб, или боровик, — один из самых ценных и вкусных грибов.',
+            'image': url_for('static', filename='mushroom_beliy.png')
+        },
+        {
+            'name': 'Лисичка',
+            'description': 'Лисички — съедобные грибы с ярко-оранжевыми шляпками и ножками.',
+            'image': url_for('static', filename='mushroom_lisichka.png')
+        },
+        {
+            'name': 'Подберезовик',
+            'description': 'Подберезовик — съедобный гриб, который часто встречается в березовых лесах.',
+            'image': url_for('static', filename='mushroom_podberezovik.png')
+        },
+        {
+            'name': 'Опёнок',
+            'description': 'Опёнок — съедобный гриб, который растет большими группами на пнях и деревьях.',
+            'image': url_for('static', filename='mushroom_openok.png')
+        },
+        {
+            'name': 'Шампиньон',
+            'description': 'Шампиньон — один из самых популярных съедобных грибов, часто используемый в кулинарии.',
+            'image': url_for('static', filename='mushroom_shampignon.png')
+        }
+    ]
+    return render_template('mushrooms.html', mushrooms=mushrooms)
