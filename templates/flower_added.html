@@ -1,0 +1,15 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 2{% endblock %} {# Основной контент: #} {% block main %}
+<body>
+    <h1>Добавлен новый цветок</h1>
+    <p>Теперь в списке цветков есть: {{ name }}</p>
+    <p>Всего цветков: {{ flower_list|length }}</p>
+    <p>Полный список цветков:</p>
+    <ul>
+        {% for flower in flower_list %}
+        <li>{{ flower.name }} - {{ flower.price }}</li>
+        {% endfor %}
+    </ul>
+</body>
+
+{% endblock %}
