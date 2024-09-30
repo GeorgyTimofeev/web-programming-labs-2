@@ -132,6 +132,7 @@ def index():
         <header>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</header>
         <ol>
             <li><a href="/lab1">Первая Лабораторная</a></li>
+            <li><a href="/lab2">Вторая Лабораторная</a></li>
         </ol>
     </body>
     <footer>
@@ -535,7 +536,7 @@ def clear_flowers():
     </html>
     '''
 
-@app.route('/lab2/example')
+@app.route('/lab2/example/')
 def example():
     name= "Тимофеев Георгий"
     lab_number = 2
