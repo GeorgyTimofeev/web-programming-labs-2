@@ -2,10 +2,12 @@ from flask import Flask, url_for, redirect, abort, render_template, request
 from werkzeug.exceptions import HTTPException
 from lab1 import lab1
 from lab2 import lab2
+from lab3 import lab3
 
 app = Flask(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
+app.register_blueprint(lab3)
 
 @app.errorhandler(400)
 def bad_request(err):
@@ -116,6 +118,7 @@ def index():
         <ol>
             <li><a href="/lab1">Первая Лабораторная</a></li>
             <li><a href="/lab2">Вторая Лабораторная</a></li>
+            <li><a href="/lab3">Третья Лабораторная</a></li>
         </ol>
     </body>
     <footer>
