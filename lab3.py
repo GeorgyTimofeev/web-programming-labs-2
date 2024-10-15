@@ -25,9 +25,23 @@ def del_cookies():
 
 @lab3.route('/lab3/form1/')
 def form1():
+    errors = {}
+
     user = request.args.get('user')
+
+    if user == '':
+        errors['user'] = 'Введите имя'
+
     age = request.args.get('age')
+
+    if age == '':
+        errors['age'] = 'Введите возраст'
+
+
     sex = request.args.get('sex')
+
+    if sex == '':
+        errors['sex'] = 'Введите свой пол'
 
     if request.args.get('clear'):
         resp = make_response(redirect(url_for('lab3.form1')))
@@ -37,7 +51,7 @@ def form1():
         return resp
 
     if user or age or sex:
-        resp = make_response(render_template('lab3/form1.html', user=user, age=age, sex=sex))
+        resp = make_response(render_template('lab3/form1.html', user=user, age=age, sex=sex, errors=errors))
         if user:
             resp.set_cookie('user', user)
         if age:
@@ -49,4 +63,4 @@ def form1():
     user = request.cookies.get('user')
     age = request.cookies.get('age')
     sex = request.cookies.get('sex')
-    return render_template('lab3/form1.html', user=user, age=age, sex=sex)
+    return render_template('lab3/form1.html', user=user, age=age, sex=sex, errors=errors)

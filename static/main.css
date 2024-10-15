@@ -190,3 +190,10 @@ option {
     color: rgb(88, 98, 84);
     background-color: rgb(251, 249, 246);
 }
+
+.error {
+    color: rgb(88, 98, 84);
+    font-size: 16px;
+    font-family: Helvetica;
+    font-weight: normal;
+}

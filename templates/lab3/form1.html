@@ -19,22 +19,35 @@
         <label><b>Ваше имя:</b></label>
     </div>
     <div>
-        <input type="text" placeholder="Как вас зовут?" name="user" />
+        <input
+            type="text"
+            placeholder="Как вас зовут?"
+            name="user"
+            value="{{ user or '' }}"
+        />
+        <span class="error">{{ errors.user }}</span>
     </div>
     <div>
         <label><b>Ваш возраст:</b></label>
     </div>
     <div>
-        <input type="number" placeholder="Сколько вам лет?" name="age" />
+        <input
+            type="number"
+            placeholder="Сколько вам лет?"
+            name="age"
+            value="{{ age or '' }}"
+        />
+        <span class="error">{{ errors.age }}</span>
     </div>
     <div>
         <label><b>Ваш пол:</b></label>
     </div>
     <div>
         <select name="sex">
-            <option value="male">Мужской</option>
-            <option value="female">Женский</option>
+            <option value="male" {{ sex == 'male' and 'selected' }}>Мужской</option>
+            <option value="female" {{ sex == 'female' and 'selected' }}>Женский</option>
         </select>
+        <span class="error">{{ errors.sex }}</span>
     </div>
     <div><button type="submit">Отправить данные</button></div>
 </form>
