@@ -1,0 +1,79 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 3 {% endblock %} {# Основной контент: #} {% block main %}
+<h1>Выбор напитка</h1>
+<form method="get" action="/lab3/payment/">
+    <div>
+        <label><b>Выберите тип напитка:</b></label>
+    </div>
+    <div>
+        <div>
+            <input
+                type="radio"
+                id="coffee"
+                name="drink"
+                value="coffee"
+                checked
+            />
+            <label for="coffee">Кофе (120 рублей)</label>
+        </div>
+        <div>
+            <input type="radio" id="black_tea" name="drink" value="black_tea" />
+            <label for="black_tea">Чёрный чай (80 рублей)</label>
+        </div>
+        <div>
+            <input type="radio" id="green_tea" name="drink" value="green_tea" />
+            <label for="green_tea">Зелёный чай (70 рублей)</label>
+        </div>
+    </div>
+    <div>
+        <label><b>Добавки:</b></label>
+    </div>
+    <div>
+        <div>
+            <input type="checkbox" name="sugar" />
+            <label for="sugar">Сахар (10 рублей)</label>
+        </div>
+        <div>
+            <input type="checkbox" name="milk" />
+            <label for="milk">Молоко (30 рублей)</label>
+        </div>
+    </div>
+    <div><button type="submit">Перейти к оплате</button></div>
+</form>
+<style>
+    form {
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: rgb(251, 249, 246);
+        color: rgb(88, 98, 84);
+        font-family: Helvetica;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        color: rgb(88, 98, 84);
+        font-family: Helvetica;
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: rgb(88, 98, 84);
+        color: rgb(251, 249, 246);
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: Helvetica;
+    }
+    button:hover {
+        background-color: rgb(88, 98, 84);
+    }
+</style>
+{% endblock %}
