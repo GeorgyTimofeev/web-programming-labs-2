@@ -1,16 +1,66 @@
 {% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
 работа 3 {% endblock %} {# Основной контент: #} {% block main %}
 <body>
-    <h1>{{ ticket_type }}</h1>
-    <p>ФИО пассажира: {{ fio }}</p>
-    <p>Полка: {{ berth }}</p>
-    <p>С бельём: {{ 'Да' if linen else 'Нет' }}</p>
-    <p>С багажом: {{ 'Да' if baggage else 'Нет' }}</p>
-    <p>Возраст: {{ age }}</p>
-    <p>Пункт выезда: {{ departure }}</p>
-    <p>Пункт назначения: {{ destination }}</p>
-    <p>Дата поездки: {{ date }}</p>
-    <p>Нужна ли страховка: {{ 'Да' if insurance else 'Нет' }}</p>
-    <h2>Стоимость билета: {{ price }} руб.</h2>
+    <h1
+        style="
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: rgb(88, 98, 84);
+        "
+    >
+        Билет
+    </h1>
+    <div
+        style="
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        "
+    >
+        <p style="font-weight: bold">
+            ФИО пассажира: <span style="font-weight: normal">{{ fio }}</span>
+        </p>
+        <p style="font-weight: bold">
+            Полка: <span style="font-weight: normal">{{ berth }}</span>
+        </p>
+        <p style="font-weight: bold">
+            С бельём:
+            <span style="font-weight: normal"
+                >{{ 'Да' if linen else 'Нет' }}</span
+            >
+        </p>
+        <p style="font-weight: bold">
+            С багажом:
+            <span style="font-weight: normal"
+                >{{ 'Да' if baggage else 'Нет' }}</span
+            >
+        </p>
+        <p style="font-weight: bold">
+            Возраст: <span style="font-weight: normal">{{ age }}</span>
+        </p>
+        <p style="font-weight: bold">
+            Пункт выезда:
+            <span style="font-weight: normal">{{ departure }}</span>
+        </p>
+        <p style="font-weight: bold">
+            Пункт назначения:
+            <span style="font-weight: normal">{{ destination }}</span>
+        </p>
+        <p style="font-weight: bold">
+            Дата поездки: <span style="font-weight: normal">{{ date }}</span>
+        </p>
+        <p style="font-weight: bold">
+            Нужна ли страховка:
+            <span style="font-weight: normal"
+                >{{ 'Да' if insurance else 'Нет' }}</span
+            >
+        </p>
+        <h2 style="text-align: center; color: rgb(88, 98, 84)">
+            Стоимость билета: {{ price }} руб.
+        </h2>
+    </div>
 </body>
 {% endblock %}

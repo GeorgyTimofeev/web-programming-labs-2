@@ -1,5 +1,8 @@
-{% extends "base.html" %} {% block lab %}Лабораторная работа 3{% endblock %} {%
-block main %}
+{% extends "base.html" %}
+
+{% block lab %}Лабораторная работа 3{% endblock %}
+
+{% block main %}
 <h1>Настройки стиля</h1>
 <form method="post">
     <div>
@@ -50,6 +53,12 @@ block main %}
     </div>
     <div><button type="submit">Применить</button></div>
 </form>
+
+<div>
+    <form action="/lab3/clear_settings_cookies/" method="post">
+        <button type="submit">Очистить настройки</button>
+    </form>
+</div>
 
 <style>
     body {

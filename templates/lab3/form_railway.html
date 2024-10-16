@@ -1,11 +1,17 @@
 {% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
 работа 3 {% endblock %} {# Основной контент: #} {% block main %}
 <body>
-    <h1 style="text-align: center; font-family: Arial, sans-serif; color: #333">
+    <h1
+        style="
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: rgb(88, 98, 84);
+        "
+    >
         Форма железнодорожного билета
     </h1>
     <form
-        action="lab3/ticket"
+        action="/lab3/ticket/"
         method="post"
         style="
             max-width: 600px;
