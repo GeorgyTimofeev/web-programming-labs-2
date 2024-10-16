@@ -1,0 +1,142 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 3 {% endblock %} {# Основной контент: #} {% block main %}
+<body>
+    <h1 style="text-align: center; font-family: Arial, sans-serif; color: #333">
+        Форма железнодорожного билета
+    </h1>
+    <form
+        action="lab3/ticket"
+        method="post"
+        style="
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        "
+    >
+        <div style="margin-bottom: 15px">
+            <label for="fio" style="display: block; font-weight: bold"
+                >ФИО пассажира:</label
+            >
+            <input
+                type="text"
+                id="fio"
+                name="fio"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="berth" style="display: block; font-weight: bold"
+                >Полка:</label
+            >
+            <select
+                id="berth"
+                name="berth"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            >
+                <option value="нижняя">Нижняя</option>
+                <option value="верхняя">Верхняя</option>
+                <option value="верхняя боковая">Верхняя боковая</option>
+                <option value="нижняя боковая">Нижняя боковая</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="linen" style="display: block; font-weight: bold"
+                >С бельём:</label
+            >
+            <input type="checkbox" id="linen" name="linen" />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="baggage" style="display: block; font-weight: bold"
+                >С багажом:</label
+            >
+            <input type="checkbox" id="baggage" name="baggage" />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="age" style="display: block; font-weight: bold"
+                >Возраст:</label
+            >
+            <input
+                type="number"
+                id="age"
+                name="age"
+                min="1"
+                max="120"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="departure" style="display: block; font-weight: bold"
+                >Пункт выезда:</label
+            >
+            <input
+                type="text"
+                id="departure"
+                name="departure"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="destination" style="display: block; font-weight: bold"
+                >Пункт назначения:</label
+            >
+            <input
+                type="text"
+                id="destination"
+                name="destination"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="date" style="display: block; font-weight: bold"
+                >Дата поездки:</label
+            >
+            <input
+                type="date"
+                id="date"
+                name="date"
+                required
+                style="width: 100%; padding: 8px; box-sizing: border-box"
+            />
+        </div>
+
+        <div style="margin-bottom: 15px">
+            <label for="insurance" style="display: block; font-weight: bold"
+                >Нужна ли страховка:</label
+            >
+            <input type="checkbox" id="insurance" name="insurance" />
+        </div>
+
+        <div style="text-align: center">
+            <input
+                type="submit"
+                value="Отправить"
+                style="
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    background-color: rgb(88, 98, 84);
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                "
+            />
+        </div>
+    </form>
+</body>
+
+{% endblock %}

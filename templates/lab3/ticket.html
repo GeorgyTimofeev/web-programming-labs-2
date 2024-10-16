@@ -1,0 +1,16 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 3 {% endblock %} {# Основной контент: #} {% block main %}
+<body>
+    <h1>{{ ticket_type }}</h1>
+    <p>ФИО пассажира: {{ fio }}</p>
+    <p>Полка: {{ berth }}</p>
+    <p>С бельём: {{ 'Да' if linen else 'Нет' }}</p>
+    <p>С багажом: {{ 'Да' if baggage else 'Нет' }}</p>
+    <p>Возраст: {{ age }}</p>
+    <p>Пункт выезда: {{ departure }}</p>
+    <p>Пункт назначения: {{ destination }}</p>
+    <p>Дата поездки: {{ date }}</p>
+    <p>Нужна ли страховка: {{ 'Да' if insurance else 'Нет' }}</p>
+    <h2>Стоимость билета: {{ price }} руб.</h2>
+</body>
+{% endblock %}
