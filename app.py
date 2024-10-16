@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.register_blueprint(lab1)
 app.register_blueprint(lab2)
 app.register_blueprint(lab3)
+app.register_blueprint(lab4)
 
 @app.errorhandler(400)
 def bad_request(err):
@@ -119,6 +120,7 @@ def index():
             <li><a href="/lab1">Первая Лабораторная</a></li>
             <li><a href="/lab2">Вторая Лабораторная</a></li>
             <li><a href="/lab3">Третья Лабораторная</a></li>
+            <li><a href="/lab4">Четвертая Лабораторная</a></li>
         </ol>
     </body>
     <footer>
