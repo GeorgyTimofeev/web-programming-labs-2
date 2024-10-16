@@ -48,7 +48,7 @@ def not_found(err):
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
         <tytle>Ошибка 404</tytle>
     </head>
     <body>
@@ -57,7 +57,7 @@ def not_found(err):
         что URL-адрес не распознан. В API это также может означать,
         что адрес правильный, но ресурс не существует.</p>
 
-        <img src="''' + url_for('static', filename='Error_404_img.png') + '''" style="width: 300px;
+        <img src="''' + url_for('static', filename='lab1/Error_404_img.png') + '''" style="width: 300px;
         position: absolute; top: 60%; right: 50px; transform: translateY(-50%);"></br>
 
         <a href="/">Вернуться на главную</a>
@@ -86,7 +86,7 @@ def internal_server_error(err):
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
         <tytle>Ошибка 500</tytle>
     </head>
     <body>
@@ -94,7 +94,7 @@ def internal_server_error(err):
         <p>На сервере произошла ошибка, в результате которой он не может успешно обработать запрос.
         Пожалуйста, попробуйте позже.</p>
 
-        <img src="''' + url_for('static', filename='Error_500_img.png') + '''" style="width: 300px;
+        <img src="''' + url_for('static', filename='lab1/Error_500_img.png') + '''" style="width: 300px;
         position: absolute; top: 50%; right: 100px; transform: translateY(-50%);"></br>
         <a href="/">Вернуться на главную</a>
     </body>
@@ -111,7 +111,7 @@ def index():
 <html>
     <head>
         <tytle>НГТУ, ФБ, Лабораторные работы</tytle>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
     </head>
     <body>
         <header>НГТУ, ФБ, WEB-программирование, часть 2. Список лабораторных</header>

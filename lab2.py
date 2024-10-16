@@ -26,10 +26,10 @@ flower_list = [
 @lab2.route('/lab2/flowers/<int:flower_id>')
 def flowers(flower_id):
     if flower_id >= len(flower_list):
-        return render_template('flower_not_found.html'), 404
+        return render_template('lab2/flower_not_found.html'), 404
     else:
         flower = flower_list[flower_id]
-        return render_template('flower.html', flower=flower)
+        return render_template('lab2/flower.html', flower=flower)
 
 @lab2.route('/lab2/request_flower/')
 def request_flower():
@@ -37,7 +37,7 @@ def request_flower():
     price = request.args.get('price')
 
     if not name or not price:
-        return render_template("flower_error.html"), 400
+        return render_template("lab2/flower_error.html"), 400
 
     return redirect(url_for('lab2.add_flower', name=name, price=int(price)))
 
@@ -45,24 +45,24 @@ def request_flower():
 @lab2.route('/lab2/add_flower/<name>/<int:price>')
 def add_flower(name, price):
     if not name or price is None:
-        return render_template("flower_error.html"), 400
+        return render_template("lab2/flower_error.html"), 400
     flower_list.append({'name': name, 'price': price})
-    return render_template('flower_added.html', name=name, price=price, flower_list=flower_list)
+    return render_template('lab2/flower_added.html', name=name, price=price, flower_list=flower_list)
 
 @lab2.route('/lab2/all_flowers/')
 def all_flowers():
-    return render_template('all_flowers.html', flower_list=flower_list)
+    return render_template('lab2/all_flowers.html', flower_list=flower_list)
 
 @lab2.route('/lab2/clear_flowers/')
 def clear_flowers():
     global flower_list
     flower_list = []
-    return render_template('flowers_cleared.html')
+    return render_template('lab2/flowers_cleared.html')
 
 @lab2.route('/lab2/delete_flower/<int:flower_id>')
 def delete_flower(flower_id):
     if flower_id >= len(flower_list):
-        return render_template('flower_not_found.html'), 404
+        return render_template('lab2/flower_not_found.html'), 404
     else:
         del flower_list[flower_id]
         return redirect(url_for('lab2.all_flowers'))
@@ -80,16 +80,16 @@ def example():
         {'name': 'банан', 'price': 40},
         {'name': 'мандарин', 'price': 55}
     ]
-    return render_template('example.html', name=name, lab_number=lab_number, student_group=student_group, student_course=student_course, fruits=fruits)
+    return render_template('lab2/example.html', name=name, lab_number=lab_number, student_group=student_group, student_course=student_course, fruits=fruits)
 
 @lab2.route('/lab2/')
 def lab():
-    return render_template('lab2.html')
+    return render_template('lab2/lab2.html')
 
 @lab2.route('/lab2/filters/')
 def filters():
     phrase = "О <b>сколько</b> <u>нам</u> <i>открытий</i> чудных..."
-    return render_template('filter.html', phrase=phrase)
+    return render_template('lab2/filter.html', phrase=phrase)
 
 @lab2.route('/lab2/calc/')
 def calc_redirect():
@@ -97,7 +97,7 @@ def calc_redirect():
 
 @lab2.route('/lab2/calc/<int:num1>/<int:num2>/')
 def calculate(num1, num2):
-    return render_template('calc.html', num1=num1, num2=num2)
+    return render_template('lab2/calc.html', num1=num1, num2=num2)
 
 @lab2.route('/lab2/calc/<int:num1>/')
 def calc_redirect_with_num1(num1):
@@ -117,7 +117,7 @@ def books():
         {'author': 'Дж. Р. Р. Толкин', 'title': 'Властелин колец', 'genre': 'Фэнтези', 'pages': 1178},
         {'author': 'Джейн Остин', 'title': 'Гордость и предубеждение', 'genre': 'Роман', 'pages': 279}
     ]
-    return render_template('books.html', books=books_list)
+    return render_template('lab2/books.html', books=books_list)
 
 
 @lab2.route('/lab2/mushrooms/')
@@ -126,27 +126,27 @@ def mushrooms_view():
         {
             'name': 'Белый гриб',
             'description': 'Белый гриб, или боровик, — один из самых ценных и вкусных грибов.',
-            'image': url_for('static', filename='mushroom_beliy.png')
+            'image': url_for('static', filename='lab2/mushroom_beliy.png')
         },
         {
             'name': 'Лисичка',
             'description': 'Лисички — съедобные грибы с ярко-оранжевыми шляпками и ножками.',
-            'image': url_for('static', filename='mushroom_lisichka.png')
+            'image': url_for('static', filename='lab2/mushroom_lisichka.png')
         },
         {
             'name': 'Подберезовик',
             'description': 'Подберезовик — съедобный гриб, который часто встречается в березовых лесах.',
-            'image': url_for('static', filename='mushroom_podberezovik.png')
+            'image': url_for('static', filename='lab2/mushroom_podberezovik.png')
         },
         {
             'name': 'Опёнок',
             'description': 'Опёнок — съедобный гриб, который растет большими группами на пнях и деревьях.',
-            'image': url_for('static', filename='mushroom_openok.png')
+            'image': url_for('static', filename='lab2/mushroom_openok.png')
         },
         {
             'name': 'Шампиньон',
             'description': 'Шампиньон — один из самых популярных съедобных грибов, часто используемый в кулинарии.',
-            'image': url_for('static', filename='mushroom_shampignon.png')
+            'image': url_for('static', filename='lab2/mushroom_shampignon.png')
         }
     ]
-    return render_template('mushrooms.html', mushrooms=mushrooms)
+    return render_template('lab2/mushrooms.html', mushrooms=mushrooms)

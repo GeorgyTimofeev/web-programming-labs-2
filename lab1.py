@@ -64,7 +64,7 @@ def lab():
 <html>
     <head>
         <tytle>Лабораторная 1</tytle>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
     </head>
     <body>
         <h1>Flask</h1>
@@ -116,7 +116,7 @@ def web():
     return '''<!doctype html>
         <html>
            <head>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
            <body>
                <h1>web-сервер на flask</h1>
@@ -137,7 +137,7 @@ def author():
     return '''<!doctype html>
         <html>
             <head>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
             <body>
                 <p>Студент: ''' + name + '''</p>
@@ -150,8 +150,8 @@ def author():
 
 @lab1.route('/lab1/oak')
 def oak():
-    path = url_for('static', filename='oak.jpg')
-    style = url_for('static', filename='lab1.css')
+    path = url_for('static', filename='lab1/oak.jpg')
+    style = url_for('static', filename='lab1/lab1.css')
     return '''
 <!doctype html>
 <html>
@@ -175,7 +175,7 @@ def counter():
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
     </head>
     <body>
         <h1>Счётчик</h1>
@@ -206,17 +206,17 @@ def resource_status():
     global tree_planted
     if tree_planted:
         status_message = "Дерево посажено"
-        status_image = url_for('static', filename='tree_after.jpg')
+        status_image = url_for('static', filename='lab1/tree_after.jpg')
     else:
         status_message = "Дерево не посажено"
-        status_image = url_for('static', filename='tree_before.jpg')
+        status_image = url_for('static', filename='lab1/tree_before.jpg')
 
     return f'''
     <!doctype html>
     <html>
         <head>
             <title>Состояние дерева</title>
-            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='lab1.css')}">
+            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='lab1/lab1.css')}">
         </head>
         <body>
             <h1>{status_message}</h1>
@@ -245,9 +245,9 @@ def created():
         <html>
             <head>
                 <title>Отказано</title>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
-            <body style='background-image: url("''' + url_for('static', filename='big_tree.jpeg') +'''")'>
+            <body style='background-image: url("''' + url_for('static', filename='lab1/big_tree.jpeg') +'''")'>
                 <h1 style='color: white; width: 50%'>Дерево уже посажено и прекрасно себя чувствует</h1>
                 <a href="/lab1/resource" style='color: white'>Вернуться к состоянию дерева</a></br>
             </body>
@@ -260,12 +260,12 @@ def created():
         <html>
             <head>
                 <title>Успешно</title>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
             <body>
                 <h1>Вы посадили дерево, Браво!</h1>
                 <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
-                <img src="''' + url_for('static', filename='tree_tumb_up.png') + '''" style='margin-top: 10px'>
+                <img src="''' + url_for('static', filename='lab1/tree_tumb_up.png') + '''" style='margin-top: 10px'>
             </body>
         </html>
         ''', 201
@@ -282,12 +282,12 @@ def delete():
         <html>
             <head>
                 <title>Успешно</title>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
             <body>
                 <h1>Что вы наделали… Дерева больше нет…</h1>
                 <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
-                <img src="''' + url_for('static', filename='tree_tumb_down.png') + '''" style='margin-top: 10px'>
+                <img src="''' + url_for('static', filename='lab1/tree_tumb_down.png') + '''" style='margin-top: 10px'>
             </body>
         </html>
         ''', 200
@@ -297,9 +297,9 @@ def delete():
         <html>
             <head>
                 <title>Отказано</title>
-                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+                <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
             </head>
-            <body style='background-image: url("''' + url_for('static', filename='no_trees_gleb.jpg') +'''"); background-size: cover; background-position: center; background-repeat: no-repeat; margin: 50px; padding: 0; height: 70vh;'>
+            <body style='background-image: url("''' + url_for('static', filename='lab1/no_trees_gleb.jpg') +'''"); background-size: cover; background-position: center; background-repeat: no-repeat; margin: 50px; padding: 0; height: 70vh;'>
                 <h1>Тут больше нечего пилить</h1>
                 <a href="/lab1/resource">Вернуться к состоянию дерева</a></br>
             </body>
@@ -313,7 +313,7 @@ def new_route():
 <!doctype html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1.css') + '''">
+        <link rel="stylesheet" type="text/css" href="''' + url_for('static', filename='lab1/lab1.css') + '''">
         <tytle>Sigmaringen Castle</tytle>
     </head>
     <body>
@@ -348,8 +348,8 @@ def new_route():
         </div>
 
         <div class="image_container" style='position: absolute; right: 50px; top: 10%'>
-            <img src="''' + url_for('static', filename='Sigmaringen_Castle.jpeg') + '''"></br>
-            <img src="''' + url_for('static', filename='Sigmaringen_Castle_2.jpeg') + '''" style='margin-top: 10px'>
+            <img src="''' + url_for('static', filename='lab1/Sigmaringen_Castle.jpeg') + '''"></br>
+            <img src="''' + url_for('static', filename='lab1/Sigmaringen_Castle_2.jpeg') + '''" style='margin-top: 10px'>
         </div>
     </body>
     <footer>Тимофеев Георгий Алексеевич, ФБИ-22, 3 Курс, 2024 год.</footer>
