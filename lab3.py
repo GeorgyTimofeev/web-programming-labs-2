@@ -6,7 +6,7 @@ def lab():
     name = request.cookies.get('name')
     name_color = request.cookies.get('name_color')
     age = request.cookies.get('age')
-    user = request.args.get('user')
+    user = request.cookies.get('user')
     return render_template('lab3/lab3.html', user=user, name=name, name_color=name_color, age=age)
 
 @lab3.route('/lab3/cookie/')
@@ -23,6 +23,7 @@ def del_cookies():
     resp.delete_cookie('name')
     resp.delete_cookie('age')
     resp.delete_cookie('name_color')
+    resp.delete_cookie('user')
     return resp
 
 @lab3.route('/lab3/form1/')
@@ -175,3 +176,39 @@ def ticket():
     return render_template('lab3/ticket.html', fio=fio, berth=berth, linen=linen, baggage=baggage, age=age,
                            departure=departure, destination=destination, date=date, insurance=insurance,
                            ticket_type=ticket_type, price=price)
+
+products = [
+    {"name": "iPhone 15", "price": 70000, "brand": "Apple", "color": "Черный"},
+    {"name": "Samsung Galaxy S24", "price": 80000, "brand": "Samsung", "color": "Белый"},
+    {"name": "Xiaomi Mi 11", "price": 60000, "brand": "Xiaomi", "color": "Синий"},
+    {"name": "OnePlus 9", "price": 65000, "brand": "OnePlus", "color": "Красный"},
+    {"name": "Google Pixel 5", "price": 75000, "brand": "Google", "color": "Зеленый"},
+    {"name": "Huawei P40", "price": 70000, "brand": "Huawei", "color": "Желтый"},
+    {"name": "Sony Xperia 1 II", "price": 90000, "brand": "Sony", "color": "Фиолетовый"},
+    {"name": "Oppo Find X3", "price": 85000, "brand": "Oppo", "color": "Оранжевый"},
+    {"name": "Vivo X60", "price": 55000, "brand": "Vivo", "color": "Серый"},
+    {"name": "Realme GT", "price": 50000, "brand": "Realme", "color": "Коричневый"},
+    {"name": "Nokia 8.3", "price": 45000, "brand": "Nokia", "color": "Золотой"},
+    {"name": "Asus ROG Phone 5", "price": 95000, "brand": "Asus", "color": "Серебряный"},
+    {"name": "Motorola Edge+", "price": 70000, "brand": "Motorola", "color": "Розовый"},
+    {"name": "LG Velvet", "price": 60000, "brand": "LG", "color": "Бирюзовый"},
+    {"name": "ZTE Axon 30", "price": 50000, "brand": "ZTE", "color": "Лаймовый"},
+    {"name": "Lenovo Legion Phone Duel", "price": 80000, "brand": "Lenovo", "color": "Мятный"},
+    {"name": "Meizu 18", "price": 55000, "brand": "Meizu", "color": "Бордовый"},
+    {"name": "Honor 30 Pro+", "price": 65000, "brand": "Honor", "color": "Сливовый"},
+    {"name": "Alcatel 3L", "price": 15000, "brand": "Alcatel", "color": "Шоколадный"},
+    {"name": "BlackBerry Key2", "price": 40000, "brand": "BlackBerry", "color": "Кремовый"}
+]
+
+@lab3.route('/lab3/search_form/')
+def form():
+    return render_template('lab3/search_form.html')
+
+@lab3.route('/lab3/products/', methods=['POST'])
+def products_view():
+    min_price = int(request.form['min_price'])
+    max_price = int(request.form['max_price'])
+
+    filtered_products = [product for product in products if min_price <= product['price'] <= max_price]
+
+    return render_template('lab3/products.html', products=filtered_products)

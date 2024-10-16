@@ -1,0 +1,19 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 3 {% endblock %} {# Основной контент: #} {% block main %}
+<body>
+    <h1>Фильтр товаров по цене</h1>
+    <form action="/lab3/products/" method="post">
+        <div>
+            <label for="min_price">Мин. цена:</label>
+            <input type="number" id="min_price" name="min_price" required />
+        </div>
+        <div>
+            <label for="max_price">Макс. цена:</label>
+            <input type="number" id="max_price" name="max_price" required />
+        </div>
+        <div>
+            <button type="submit">Искать</button>
+        </div>
+    </form>
+</body>
+{% endblock %}
