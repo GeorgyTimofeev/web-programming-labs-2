@@ -104,9 +104,10 @@ def tree():
         return render_template('lab4/tree.html', tree_count=tree_count)
 
     operation = request.form.get('operation')
+
     if operation == 'plant':
         tree_count += 1
     elif operation == 'cut':
         tree_count -= 1
 
-    return render_template('lab4/tree.html', tree_count=tree_count)
+    return redirect(url_for('lab4.tree'))
