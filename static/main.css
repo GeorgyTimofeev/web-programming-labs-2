@@ -120,6 +120,11 @@ button:hover {
     background-color: rgb(72, 80, 69);
 }
 
+button:disabled {
+    background-color: rgb(200, 200, 200);
+    color: rgb(150, 150, 150);
+}
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
