@@ -1,0 +1,16 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}{{ type }}
+чисел{% endblock %} {# Основной контент: #} {% block main %}
+
+<body>
+    <form action="/lab4/mul/" method="post">
+        <h1>{{ type }}</h1>
+        <div style="display: flex; align-items: center">
+            <input type="number" name="x1" />
+            <p style="font-size: 40px; margin: 0 10px">{{ type_symbol }}</p>
+            <input type="number" name="x2" />
+            <input type="submit" value="=" style="margin-left: 10px" />
+        </div>
+    </form>
+</body>
+
+{% endblock %}

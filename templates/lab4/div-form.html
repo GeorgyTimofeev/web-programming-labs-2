@@ -2,8 +2,9 @@
 чисел{% endblock %} {# Основной контент: #} {% block main %}
 <body>
     <form action="/lab4/div" method="post">
-        <h1>Деление чисел</h1>
-        <input type="number" name="x1" /> / <input type="number" name="x2" />
+        <h1>{{ type }}</h1>
+        <input type="number" name="x1" /> {{ type_symbol }}
+        <input type="number" name="x2" />
         <input type="submit" value="=" />
     </form>
 </body>

@@ -2,6 +2,9 @@ from flask import Blueprint, url_for, redirect, abort, render_template, request
 from werkzeug.exceptions import HTTPException
 lab1 = Blueprint('lab1',__name__)
 
+@lab1.context_processor
+def inject_current_lab():
+    return {'current_lab': '/lab1/'}
 
 @lab1.route('/lab1/trigger_400')
 def trigger_400():

@@ -2,6 +2,10 @@ from flask import Blueprint, url_for, redirect, abort, render_template, request
 from werkzeug.exceptions import HTTPException
 lab2 = Blueprint('lab2',__name__)
 
+@lab2.context_processor
+def inject_current_lab():
+    return {'current_lab': '/lab2/'}
+
 @lab2.route('/lab2/a')
 def a_no_slash():
     return 'без слеша'

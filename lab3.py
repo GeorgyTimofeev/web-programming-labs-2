@@ -1,6 +1,10 @@
 from flask import Blueprint, url_for, redirect, abort, render_template, request, make_response
 lab3 = Blueprint('lab3',__name__)
 
+@lab3.context_processor
+def inject_current_lab():
+    return {'current_lab': '/lab3/'}
+
 @lab3.route('/lab3/')
 def lab():
     name = request.cookies.get('name')
