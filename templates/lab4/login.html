@@ -1,6 +1,26 @@
 {% extends "base.html" %} {% block lab %} Лабораторная работа 4 {% endblock %}
 {% block main %} {% if authorized %}
 <h1>Добро пожаловать, {{ login }}!</h1>
+<div>
+    <form
+        action="/lab4/logout/"
+        method="POST"
+        style="text-align: left; margin-top: 20px"
+    >
+        <button
+            style="
+                background-color: rgb(88, 98, 84);
+                color: rgb(251, 249, 246);
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            "
+        >
+            Выход
+        </button>
+    </form>
+</div>
 {% else %}
 <body>
     <h1>Вход</h1>

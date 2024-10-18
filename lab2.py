@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect, abort, render_template, request
+from flask import Blueprint, url_for, redirect, abort, render_template, request, session
 from werkzeug.exceptions import HTTPException
 lab2 = Blueprint('lab2',__name__)
 
