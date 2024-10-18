@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block lab %} Лабораторная работа 4 {% endblock %}
+{% block main %} {% if authorized %}
+<h1>Добро пожаловать, {{ login }}!</h1>
+{% else %}
+<body>
+    <h1>Вход</h1>
+    <h2>Пожалуйста, авторизуйтесь</h2>
+    <form
+        method="post"
+        style="
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        "
+    >
+        <div style="margin-bottom: 15px">
+            <label for="login" style="display: block; margin-bottom: 5px"
+                ><h3>Логин:</h3></label
+            >
+            <input
+                type="text"
+                id="login"
+                name="login"
+                required
+                style="
+                    width: 95%;
+                    padding: 10px;
+                    border: 1px solid rgb(88, 98, 84);
+                    border-radius: 5px;
+                "
+            />
+        </div>
+        <div style="margin-bottom: 15px">
+            <label for="password" style="display: block; margin-bottom: 5px"
+                ><h3>Пароль:</h3></label
+            >
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                style="
+                    width: 95%;
+                    padding: 10px;
+                    border: 1px solid rgb(88, 98, 84);
+                    border-radius: 5px;
+                "
+            />
+        </div>
+        <div style="color: red; margin-bottom: 15px">{{ error }}</div>
+        <div style="text-align: center">
+            <button
+                type="submit"
+                style="
+                    background-color: rgb(88, 98, 84);
+                    color: rgb(251, 249, 246);
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                "
+            >
+                Войти
+            </button>
+            <button
+                type="reset"
+                style="
+                    background-color: rgb(88, 98, 84);
+                    color: rgb(251, 249, 246);
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                "
+            >
+                Отмена
+            </button>
+        </div>
+    </form>
+</body>
+{% endif %} {% endblock %}
