@@ -1,0 +1,59 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %} Заказ зерна
+{% endblock %} {# Основной контент: #} {% block main %}
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='lab4/Grain_shop.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    footer {
+        background-color: transparent;
+    }
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 600px;
+        margin: 50px auto;
+    }
+    header {
+        font-family: "Arial", sans-serif;
+        font-size: 2em;
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <h1>Покупка зерна</h1>
+    <form method="post" action="/lab4/grain-order/" class="order-form">
+        <div class="form-group">
+            <label for="grain">Выберите зерно:</label>
+            <select id="grain" name="grain_type">
+                <option value="Ячмень">Ячмень</option>
+                <option value="Овёс">Овёс</option>
+                <option value="Пшеница">Пшеница</option>
+                <option value="Рожь">Рожь</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="weight">Укажите вес (в тоннах):</label>
+            <input type="number" id="weight" name="weight" step="0.01" />
+        </div>
+        <div class="form-group">
+            <button type="submit">Рассчитать</button>
+        </div>
+    </form>
+
+    <div class="order-message">
+        {% if message %}
+        <p>{{ message|safe }}</p>
+        {% elif error %}
+        <p style="color: red">{{ error }}</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

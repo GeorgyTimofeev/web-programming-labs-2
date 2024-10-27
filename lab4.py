@@ -193,3 +193,54 @@ def fridge():
         snowflakes = '❄️'
 
     return render_template('lab4/fridge.html', message=message, snowflakes=snowflakes)
+
+@lab4.route('/lab4/grain-order/', methods=['GET', 'POST'])
+def grain_order():
+    grain_prices = {
+        'Ячмень': 12345,
+        'Овёс': 8522,
+        'Пшеница': 8722,
+        'Рожь': 14111
+    }
+
+    if request.method == 'GET':
+        return render_template('lab4/grain-order.html', grain_prices=grain_prices)
+
+    grain_type = request.form.get('grain_type')
+    weight = request.form.get('weight')
+
+    if not weight:
+        error = 'Ошибка: вес не указан'
+        return render_template('lab4/grain-order.html', error=error, grain_prices=grain_prices)
+
+    try:
+        weight = float(weight)
+    except ValueError:
+        error = 'Ошибка: некорректное значение веса'
+        return render_template('lab4/grain-order.html', error=error, grain_prices=grain_prices)
+
+    if weight <= 0:
+        error = 'Ошибка: вес должен быть больше 0'
+        return render_template('lab4/grain-order.html', error=error, grain_prices=grain_prices)
+
+    if weight > 500:
+        error = 'Ошибка: такого объёма сейчас нет в наличии'
+        return render_template('lab4/grain-order.html', error=error, grain_prices=grain_prices)
+
+    price_per_ton = grain_prices.get(grain_type)
+    if not price_per_ton:
+        error = 'Ошибка: некорректный тип зерна'
+        return render_template('lab4/grain-order.html', error=error, grain_prices=grain_prices)
+
+    total_price = weight * price_per_ton
+    discount = 0
+
+    if weight > 50:
+        discount = total_price * 0.10
+        total_price -= discount
+
+    message = f'<b>Заказ успешно сформирован.</b><br>Вы заказали <u>{grain_type}.</u><br>Вес: {weight} т.<br>Сумма к оплате: <i>{total_price:.2f} руб</i>.'
+    if discount > 0:
+        message += f'<br>(применена скидка за большой объём: {discount:.2f} руб)'
+
+    return render_template('lab4/grain-order.html', message=message, grain_prices=grain_prices)
