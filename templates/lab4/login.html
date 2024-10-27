@@ -25,14 +25,19 @@
                 cursor: pointer;
             "
         >
-            Выход
+            Выход из аккаунта
         </button>
     </form>
 </div>
 {% else %}
 <body>
     <h1>Вход</h1>
-    <h2>Пожалуйста, авторизуйтесь</h2>
+    <rewrite_this>
+        <h2>
+            Пожалуйста, авторизуйтесь или зарегистрируйтесь
+            <a href="/lab4/register">здесь</a>
+        </h2>
+    </rewrite_this>
     <form
         method="post"
         style="

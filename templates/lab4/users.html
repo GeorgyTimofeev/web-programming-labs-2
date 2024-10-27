@@ -1,0 +1,70 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Список
+пользователей{% endblock %} {# Основной контент: #} {% block main %}
+
+<style>
+    body {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    footer {
+        background-color: transparent;
+    }
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+    button {
+        font-size: 0.8em;
+        padding: 5px 10px;
+    }
+</style>
+
+<div class="container">
+    <h1>Список пользователей</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="padding-right: 20px">Имя пользователя</th>
+                <th>Логин</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td style="padding-right: 20px">{{ user.name }}</td>
+                <td>{{ user.login }}</td>
+                <td style="text-align: right">
+                    {% if user.login == session['login'] %}
+                    <form method="post" style="display: inline">
+                        <input type="hidden" name="action" value="edit" />
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Новое имя"
+                        />
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Новый пароль"
+                        />
+                        <button type="submit">Изменить</button>
+                    </form>
+                    <form method="post" style="display: inline">
+                        <input type="hidden" name="action" value="delete" />
+                        <button type="submit">Удалить аккаунт</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
