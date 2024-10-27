@@ -1,6 +1,14 @@
 {% extends "base.html" %} {% block lab %} Лабораторная работа 4 {% endblock %}
 {% block main %} {% if authorized %}
-<h1>Добро пожаловать, {{ login }}!</h1>
+<h1>Добро пожаловать, {{ name }}!</h1>
+<h2>Вы успешно авторизовались и теперь можете играть в боулинг</h2>
+<video
+    src="{{ url_for('static', filename='lab4/bowling.mp4') }}"
+    alt="Bowling_mp4"
+    style="width: 15%"
+    autoplay
+    loop
+></video>
 <div>
     <form
         action="/lab4/logout/"
@@ -44,7 +52,7 @@
                 type="text"
                 id="login"
                 name="login"
-                required
+                value="{{ login }}"
                 style="
                     width: 95%;
                     padding: 10px;
@@ -61,7 +69,6 @@
                 type="password"
                 id="password"
                 name="password"
-                required
                 style="
                     width: 95%;
                     padding: 10px;
@@ -70,7 +77,16 @@
                 "
             />
         </div>
-        <div style="color: red; margin-bottom: 15px">{{ error }}</div>
+        <div
+            style="
+                color: rgb(255, 69, 0);
+                font-weight: bold;
+                margin-bottom: 15px;
+                padding: 10px;
+            "
+        >
+            {{ error }}
+        </div>
         <div style="text-align: center">
             <button
                 type="submit"
