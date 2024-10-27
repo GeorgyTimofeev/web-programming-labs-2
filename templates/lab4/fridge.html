@@ -1,0 +1,57 @@
+{% extends "base.html" %} {% block lab %} Холодильник {% endblock %} {% block
+main %}
+
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='lab4/fridge.jpg') }}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    footer {
+        background-color: transparent;
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        max-width: 600px;
+        margin: 50px auto;
+    }
+
+    header {
+        font-family: "Arial", sans-serif;
+        font-size: 2em;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <h1>Управление температурой холодильника</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="temperature">Температура (°С):</label>
+            <input
+                type="text"
+                id="temperature"
+                name="temperature"
+                class="form-control"
+            />
+        </div>
+        <div>
+            <button type="submit" class="btn btn-primary">Установить</button>
+        </div>
+    </form>
+    {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+    {% endif %} {% if message %}
+    <div class="alert alert-success mt-3">{{ message }}</div>
+    <div class="snowflakes">{{ snowflakes }}</div>
+    {% endif %}
+</div>
+
+{% endblock %}
