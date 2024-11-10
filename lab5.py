@@ -398,28 +398,49 @@ def user_articles():
     login_id = login_id["id"]
 
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT * FROM articles WHERE user_id=%s;", (login_id,))
+        cur.execute("""
+            SELECT a.*,
+                   (SELECT COUNT(*) FROM favorites WHERE article_id=a.id) as star_count,
+                   EXISTS(SELECT 1 FROM favorites WHERE article_id=a.id AND user_id=%s) as is_favorited
+            FROM articles a
+            WHERE user_id=%s;
+        """, (login_id, login_id))
     else:
-        cur.execute("SELECT * FROM articles WHERE login_id=?;", (login_id,))
+        cur.execute("""
+            SELECT a.*,
+                   (SELECT COUNT(*) FROM favorites WHERE article_id=a.id) as star_count,
+                   EXISTS(SELECT 1 FROM favorites WHERE article_id=a.id AND user_id=?) as is_favorited
+            FROM articles a
+            WHERE login_id=?;
+        """, (login_id, login_id))
 
     articles = cur.fetchall()
 
     # Получаем логины пользователей
     user_logins = {}
     for article in articles:
-        user_id = article['user_id']
-        if user_id not in user_logins:
+        # Используем правильное имя столбца в зависимости от типа БД
+        article_user_id = article['user_id'] if current_app.config['DB_TYPE'] == 'postgres' else article['login_id']
+
+        if article_user_id not in user_logins:
             if current_app.config['DB_TYPE'] == 'postgres':
-                cur.execute("SELECT login FROM users WHERE id=%s;", (user_id,))
+                cur.execute("SELECT login FROM users WHERE id=%s;", (article_user_id,))
             else:
-                cur.execute("SELECT login FROM users WHERE id=?;", (user_id,))
+                cur.execute("SELECT login FROM users WHERE id=?;", (article_user_id,))
             user_login = cur.fetchone()
             if user_login:
-                user_logins[user_id] = user_login['login']
+                user_logins[article_user_id] = user_login['login']
 
     db_close(conn, cur)
 
     if not articles:
-        return render_template('lab5/articles.html', message='У вас нет ни одной статьи', page_title='Мои статьи')
+        return render_template('lab5/articles.html',
+                             message='У вас нет ни одной статьи',
+                             page_title='Мои статьи')
 
-    return render_template('lab5/articles.html', articles=articles, user_logins=user_logins, login_id=login_id, page_title='Мои статьи')
+    return render_template('lab5/articles.html',
+                         articles=articles,
+                         user_logins=user_logins,
+                         login_id=login_id,
+                         page_title='Мои статьи',
+                         is_postgres=(current_app.config['DB_TYPE'] == 'postgres'))
