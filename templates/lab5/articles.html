@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% block lab %} Список статей {% endblock %} {% block
 main %}
-
 <h1>Список статей</h1>
-<a href="{{ url_for('lab5.create') }}">Создать статью</a>
+
+{% if message %}
+<div><h2>{{ message }}</h2></div>
+{% endif %}
 
 <div>
     {% for article in articles %}
@@ -17,8 +19,25 @@ main %}
     >
         <h2 style="font-size: 22px">{{ article.title }}</h2>
         <div><p style="font-size: 20px">{{ article.article_text }}</p></div>
+        <div>
+            <a href="{{ url_for('lab5.edit', article_id=article.id) }}"
+                >Редактировать</a
+            >
+            <br />
+            <br />
+            <form
+                action="{{ url_for('lab5.delete', article_id=article.id) }}"
+                method="post"
+                style="display: inline"
+            >
+                <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+        </div>
     </div>
     {% endfor %}
-</div>
 
+    <div style="text-align: center">
+        <a href="{{ url_for('lab5.create') }}">Создать статью</a>
+    </div>
+</div>
 {% endblock %}

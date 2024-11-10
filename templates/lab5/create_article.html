@@ -1,8 +1,16 @@
-{% extends "base.html" %} {% block lab %} Создание статьи {% endblock %} {%
-block main %}
+{% extends "base.html" %} {% block lab %} {% if article %} Редактирование статьи
+{% else %} Создание статьи {% endif %} {% endblock %} {% block main %}
 <div class="article-creation">
-    <h1>Создание статьи</h1>
     <form method="post">
+        <h1>
+            {% if article %}Редактирование статьи{% else %}Создание статьи{%
+            endif %}
+        </h1>
+        {% if error %}
+        <div class="alert alert-danger" role="alert" style="color: red">
+            {{ error }}
+        </div>
+        {% endif %}
         <div class="form-group">
             <h2><label for="title">Заголовок:</label></h2>
             <input
@@ -11,7 +19,7 @@ block main %}
                 name="title"
                 class="form-control"
                 style="width: 400px"
-                required
+                value="{{ article.title if article else '' }}"
             />
         </div>
         <div class="form-group">
@@ -22,10 +30,13 @@ block main %}
                 class="form-control"
                 rows="10"
                 style="width: 700px"
-                required
-            ></textarea>
+            >
+{{ article.article_text if article else '' }}</textarea
+            >
         </div>
-        <button type="submit" class="btn btn-primary">Создать</button>
+        <button type="submit" class="btn btn-primary">
+            {% if article %}Сохранить{% else %}Создать{% endif %}
+        </button>
     </form>
 </div>
 {% endblock %}

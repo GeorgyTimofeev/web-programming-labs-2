@@ -128,6 +128,9 @@ def create():
     title = request.form.get('title')
     article_text = request.form.get('article_text')
 
+    if not (title and article_text):
+        return render_template('lab5/create_article.html', error='Заполните все поля')
+
     conn, cur = db_connect()
     if not conn or not cur:
         return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
@@ -182,4 +185,64 @@ def list():
     articles = cur.fetchall()
 
     db_close(conn, cur)
+
+    if not articles:
+        return render_template('lab5/articles.html', message='У вас нет ни одной статьи')
+
     return render_template('lab5/articles.html', articles=articles)
+
+@lab5.route('/lab5/edit/<int:article_id>/', methods=['GET', 'POST'])
+def edit(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect(url_for('lab5.login'))
+
+    conn, cur = db_connect()
+    if not conn or not cur:
+        return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
+
+    if request.method == 'GET':
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
+        else:
+            cur.execute("SELECT * FROM articles WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (article_id, login))
+
+        article = cur.fetchone()
+        db_close(conn, cur)
+
+        if not article:
+            return render_template('lab5/create_article.html', error='Статья не найдена')
+
+        return render_template('lab5/create_article.html', article=article)
+
+    title = request.form.get('title')
+    article_text = request.form.get('article_text')
+
+    if not (title and article_text):
+        return render_template('lab5/create_article.html', error='Заполните все поля', article={'id': article_id, 'title': title, 'article_text': article_text})
+
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE articles SET title=%s, article_text=%s WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (title, article_text, article_id, login))
+    else:
+        cur.execute("UPDATE articles SET title=?, article_text=? WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (title, article_text, article_id, login))
+
+    db_close(conn, cur)
+    return redirect(url_for('lab5.list'))
+
+@lab5.route('/lab5/delete/<int:article_id>/', methods=['POST'])
+def delete(article_id):
+    login = session.get('login')
+    if not login:
+        return redirect(url_for('lab5.login'))
+
+    conn, cur = db_connect()
+    if not conn or not cur:
+        return render_template('lab5/articles.html', error='Ошибка подключения к базе данных')
+
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("DELETE FROM articles WHERE id=%s AND user_id=(SELECT id FROM users WHERE login=%s);", (article_id, login))
+    else:
+        cur.execute("DELETE FROM articles WHERE id=? AND login_id=(SELECT id FROM users WHERE login=?);", (article_id, login))
+
+    db_close(conn, cur)
+    return redirect(url_for('lab5.list'))
