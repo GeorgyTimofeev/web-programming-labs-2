@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block lab %} Список пользователей {% endblock %} {%
+block main %} {% if error %}
+<p>{{ error }}</p>
+{% elif message %}
+<p>{{ message }}</p>
+{% else %}
+
+<div
+    class="user-cards"
+    style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: center;
+    "
+>
+    {% for user in users %}
+    <div
+        class="user-card"
+        style="
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+            transition:
+                transform 0.3s,
+                box-shadow 0.3s,
+                background-color 0.3s,
+                border-color 0.3s;
+            margin: 10px;
+        "
+        onmouseover="this.style.backgroundColor='#ccc'; this.style.borderColor='#000';"
+        onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.borderColor='#ccc';"
+    >
+        <p>{{ user.login }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %} {% endblock %}

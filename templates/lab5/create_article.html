@@ -34,6 +34,22 @@
 {{ article.article_text if article else '' }}</textarea
             >
         </div>
+        <div class="form-group">
+            <h2><label for="is_public">Публичная:</label></h2>
+            <input
+                type="checkbox"
+                id="is_public"
+                name="is_public"
+                {%
+                if
+                article
+                and
+                article.is_public
+                %}checked{%
+                endif
+                %}
+            />
+        </div>
         <button type="submit" class="btn btn-primary">
             {% if article %}Сохранить{% else %}Создать{% endif %}
         </button>
