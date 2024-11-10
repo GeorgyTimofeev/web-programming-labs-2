@@ -13,8 +13,7 @@ def inject_current_lab():
     return {'current_lab': '/lab5/'}
 
 def db_connect():
-    db_type = current_app.config.get('DB_TYPE')
-    if db_type == 'postgres':
+    if current_app.config['DB_TYPE'] == 'postgres':
         conn = psycopg2.connect(
             host='127.0.0.1',
             database='georgy_timofeev_knowledge_base',
@@ -22,14 +21,13 @@ def db_connect():
             password='web_password'
         )
         cur = conn.cursor(cursor_factory=RealDictCursor)
-    elif db_type == 'sqlite':
+    else:
         dir_path = path.dirname(path.realpath(__file__))
         db_path = path.join(dir_path, 'database.db')
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
         cur = conn.cursor()
-    else:
-        return None, None
+
     return conn, cur
 
 def db_close(conn, cur):
