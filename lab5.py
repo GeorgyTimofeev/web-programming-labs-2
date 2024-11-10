@@ -188,6 +188,7 @@ def list():
         user = cur.fetchone()
         user_id = user['id'] if user else None
 
+    # Разные запросы для PostgreSQL и SQLite
     if current_app.config['DB_TYPE'] == 'postgres':
         cur.execute("""
             SELECT a.*,
@@ -212,19 +213,29 @@ def list():
     # Получаем логины пользователей
     user_logins = {}
     for article in articles:
-        user_id = article['user_id']
-        if user_id not in user_logins:
+        # Используем правильное имя столбца в зависимости от типа БД
+        article_user_id = article['user_id'] if current_app.config['DB_TYPE'] == 'postgres' else article['login_id']
+
+        if article_user_id not in user_logins:
             if current_app.config['DB_TYPE'] == 'postgres':
-                cur.execute("SELECT login FROM users WHERE id=%s;", (user_id,))
+                cur.execute("SELECT login FROM users WHERE id=%s;", (article_user_id,))
             else:
-                cur.execute("SELECT login FROM users WHERE id=?;", (user_id,))
+                cur.execute("SELECT login FROM users WHERE id=?;", (article_user_id,))
             user_login = cur.fetchone()
             if user_login:
-                user_logins[user_id] = user_login['login']
+                user_logins[article_user_id] = user_login['login']
 
     db_close(conn, cur)
 
-    return render_template('lab5/articles.html', articles=articles, user_logins=user_logins, page_title='Публичные статьи')
+    if not articles:
+        return render_template('lab5/articles.html', message='Нет публичных статей', page_title='Публичные статьи')
+
+    return render_template('lab5/articles.html',
+                         articles=articles,
+                         user_logins=user_logins,
+                         login_id=user_id,
+                         page_title='Публичные статьи',
+                         is_postgres=(current_app.config['DB_TYPE'] == 'postgres'))
 
 @lab5.route('/lab5/edit/<int:article_id>/', methods=['GET', 'POST'])
 def edit(article_id):

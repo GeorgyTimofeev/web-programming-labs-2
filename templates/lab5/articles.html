@@ -9,12 +9,11 @@ block main %}
             display: inline-block;
             padding: 8px 16px;
             margin: 0 5px;
-            background-color: rgb(88, 98, 84);
-            color: rgb(251, 249, 246);
+            background-color: #007bff;
+            color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 4px;
             transition: background-color 0.3s ease;
-            font-family: Helvetica;
         "
     >
         Создать статью
@@ -25,12 +24,11 @@ block main %}
             display: inline-block;
             padding: 8px 16px;
             margin: 0 5px;
-            background-color: rgb(88, 98, 84);
-            color: rgb(251, 249, 246);
+            background-color: #6c757d;
+            color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 4px;
             transition: background-color 0.3s ease;
-            font-family: Helvetica;
         "
     >
         Мои статьи
@@ -41,12 +39,11 @@ block main %}
             display: inline-block;
             padding: 8px 16px;
             margin: 0 5px;
-            background-color: rgb(88, 98, 84);
-            color: rgb(251, 249, 246);
+            background-color: #6c757d;
+            color: white;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 4px;
             transition: background-color 0.3s ease;
-            font-family: Helvetica;
         "
     >
         Публичные статьи
@@ -55,18 +52,17 @@ block main %}
 
 {% if message %}
 <div>
-    <h2 style="color: rgb(88, 98, 84); text-align: center">{{ message }}</h2>
+    <h2 style="color: #666; text-align: center">{{ message }}</h2>
 </div>
 {% endif %} {% if error %}
 <div
     style="
         padding: 15px;
         margin-bottom: 20px;
-        border: 1px solid rgb(88, 98, 84);
-        border-radius: 5px;
-        color: rgb(88, 98, 84);
-        background-color: rgb(251, 249, 246);
-        font-family: Helvetica;
+        border: 1px solid #dc3545;
+        border-radius: 4px;
+        color: #dc3545;
+        background-color: #f8d7da;
     "
 >
     {{ error }}
@@ -85,60 +81,60 @@ block main %}
     {% for article in articles %}
     <div
         style="
-        background-color: {% if article.is_favorited %}rgb(235, 242, 231){% else %}rgb(251, 249, 246){% endif %};
-        border: 2px solid rgb(88, 98, 84);
-        border-radius: 10px;
+        background-color: {% if article.is_favorited %}#fff3e0{% else %}#f0f0f0{% endif %};
+        border: 2px solid #00796b;
+        border-radius: 8px;
         padding: 20px;
-        box-shadow: 0 4px 8px rgba(88, 98, 84, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         width: 60%;
         text-align: center;
         transition: all 0.3s ease;
         margin: 10px;
         position: relative;
-        transform: translateY(0);
-        font-family: Helvetica;"
+        transform: translateY(0);"
     >
         <!-- Информация об авторе -->
         <p style="position: absolute; top: 10px; right: 10px; margin: 0">
             Автор:
             <span
                 style="
-                color: {% if article.user_id == login_id %}rgb(251, 249, 246){% else %}rgb(88, 98, 84){% endif %};
-                background-color: {% if article.user_id == login_id %}rgb(88, 98, 84){% else %}transparent{% endif %};
+                color: {% if (is_postgres and article.user_id == login_id) or (not is_postgres and article.login_id == login_id) %}white{% else %}black{% endif %};
+                background-color: {% if (is_postgres and article.user_id == login_id) or (not is_postgres and article.login_id == login_id) %}#004d40{% else %}transparent{% endif %};
                 padding: 2px 5px;
                 border-radius: 4px;"
             >
-                {{ user_logins[article.user_id] }}
+                {{ user_logins[(article.user_id if is_postgres else
+                article.login_id)] }}
             </span>
         </p>
 
         <!-- Содержание статьи -->
         <div style="margin-top: 30px">
-            <h2 style="color: rgb(88, 98, 84); margin-bottom: 15px">
+            <h2 style="color: #333; margin-bottom: 15px">
                 {{ article.title }}
             </h2>
-            <div>
-                <p
-                    style="
-                        margin: 20px 0;
-                        color: rgb(88, 98, 84);
-                        line-height: 1.6;
-                    "
-                >
-                    {{ article.article_text }}
-                </p>
-            </div>
+            <p style="margin: 20px 0; color: #666; line-height: 1.6">
+                {{ article.article_text }}
+            </p>
         </div>
 
         <!-- Кнопки управления -->
         <div style="margin-top: 20px">
-            {% if article.user_id == login_id %}
+            {% if (is_postgres and article.user_id == login_id) or (not
+            is_postgres and article.login_id == login_id) %}
             <div
                 style="display: flex; justify-content: space-between; gap: 10px"
             >
                 <a
                     href="{{ url_for('lab5.edit', article_id=article.id) }}"
-                    style="color: rgb(88, 98, 84)"
+                    style="
+                        padding: 8px 16px;
+                        background-color: #ffc107;
+                        color: black;
+                        text-decoration: none;
+                        border-radius: 4px;
+                        transition: background-color 0.3s ease;
+                    "
                 >
                     Редактировать
                 </a>
@@ -151,13 +147,12 @@ block main %}
                         type="submit"
                         style="
                             padding: 8px 16px;
-                            background-color: rgb(88, 98, 84);
-                            color: rgb(251, 249, 246);
+                            background-color: #dc3545;
+                            color: white;
                             border: none;
-                            border-radius: 10px;
+                            border-radius: 4px;
                             cursor: pointer;
                             transition: background-color 0.3s ease;
-                            font-family: Helvetica;
                         "
                         onclick="return confirm('Вы уверены, что хотите удалить эту статью?')"
                     >
@@ -176,13 +171,12 @@ block main %}
                     style="
                         padding: 8px 16px;
                         min-width: 200px;
-                        background-color: {% if article.is_favorited %}rgb(147, 164, 141){% else %}rgb(88, 98, 84){% endif %};
-                        color: rgb(251, 249, 246);
+                        background-color: {% if article.is_favorited %}#ffc107{% else %}#007bff{% endif %};
+                        color: {% if article.is_favorited %}black{% else %}white{% endif %};
                         border: none;
-                        border-radius: 10px;
+                        border-radius: 4px;
                         cursor: pointer;
-                        transition: all 0.3s ease;
-                        font-family: Helvetica;"
+                        transition: all 0.3s ease;"
                 >
                     {% if article.is_favorited %} Убрать из избранного ⭐ {%
                     else %} Добавить в избранное ☆ {% endif %}
@@ -203,10 +197,8 @@ block main %}
                 gap: 5px;
             "
         >
-            <span style="font-size: 1.2em; color: rgb(88, 98, 84)">⭐</span>
-            <span style="font-weight: bold; color: rgb(88, 98, 84)"
-                >{{ article.star_count }}</span
-            >
+            <span style="font-size: 1.2em; color: #ffd700">⭐</span>
+            <span style="font-weight: bold">{{ article.star_count }}</span>
         </div>
         {% endif %}
 
@@ -217,11 +209,10 @@ block main %}
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
-                background-color: rgb(88, 98, 84);
+                background-color: #ff9800;
                 padding: 2px 8px;
-                border-radius: 10px;
-                color: rgb(251, 249, 246);
-                font-family: Helvetica;
+                border-radius: 4px;
+                color: white;
             "
         >
             Личная
