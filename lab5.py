@@ -136,25 +136,40 @@ def create():
     if not conn or not cur:
         return render_template('lab5/create_article.html', error='Ошибка подключения к базе данных')
 
+    # Сначала получаем user_id
     if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT id FROM users WHERE login=%s;", (login, ))
+        cur.execute("SELECT id FROM users WHERE login=%s;", (login,))
     else:
-        cur.execute("SELECT id FROM users WHERE login=?;", (login, ))
+        cur.execute("SELECT id FROM users WHERE login=?;", (login,))
 
-    user_id = cur.fetchone()
-    if not user_id:
+    user = cur.fetchone()
+    if not user:
         db_close(conn, cur)
         return render_template('lab5/create_article.html', error='Пользователь не найден')
 
-    user_id = user_id["id"]
+    user_id = user['id']
 
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("INSERT INTO articles (user_id, title, article_text, is_public, is_favorite, likes) VALUES (%s, %s, %s, %s, %s, %s)", (user_id, title, article_text, is_public, False, 0))
-    else:
-        cur.execute("INSERT INTO articles (login_id, title, article_text, is_public, is_favorite, likes) VALUES (?, ?, ?, ?, ?, ?)", (user_id, title, article_text, is_public, False, 0))
+    # Затем используем полученный user_id для создания статьи
+    try:
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                INSERT INTO articles (user_id, title, article_text, is_public, is_favorite, likes)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """, (user_id, title, article_text, is_public, False, 0))
+        else:
+            cur.execute("""
+                INSERT INTO articles (login_id, title, article_text, is_public, is_favorite, likes)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, (user_id, title, article_text, is_public, False, 0))
 
-    db_close(conn, cur)
-    return redirect(url_for('lab5.lab'))
+        conn.commit()
+        db_close(conn, cur)
+        return redirect(url_for('lab5.lab'))
+
+    except Exception as e:
+        db_close(conn, cur)
+        return render_template('lab5/create_article.html', error=f'Ошибка при создании статьи: {str(e)}')
+
 
 @lab5.route('/lab5/list/')
 def list():
