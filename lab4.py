@@ -156,6 +156,7 @@ def login():
 @lab4.route('/lab4/logout/', methods=['POST'])
 def logout():
     session.pop('login', None)
+    session.pop('name', None)
     return redirect(url_for('lab4.login'))
 
 @lab4.route('/lab4/fridge/', methods=['GET', 'POST'])
