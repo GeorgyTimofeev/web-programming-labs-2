@@ -84,6 +84,12 @@ def login():
     db_close(conn, cur)
     return render_template('lab5/succes_login.html', login=login)
 
+@lab5.route('/lab5/logout/', methods=['GET','POST'])
+def logout():
+    session.pop('login', None)
+    session.pop('name', None)
+    return redirect(url_for('lab5.login'))
+
 @lab5.route('/lab5/create/', methods=['GET', 'POST'])
 def create():
     login = session.get('login')
@@ -105,3 +111,20 @@ def create():
 
     db_close(conn, cur)
     return redirect(url_for('lab5.lab'))
+
+@lab5.route('/lab5/list/')
+def list():
+    login = session.get('login')
+    if not login:
+        return redirect(url_for('lab5.login'))
+
+    conn, cur = db_connect()
+
+    cur.execute("SELECT id FROM users WHERE login=%s;", (login, ))
+    login_id = cur.fetchone()["id"]
+
+    cur.execute("SELECT * FROM articles WHERE user_id=%s;", (login_id, ))
+    articles = cur.fetchall()
+
+    db_close(conn, cur)
+    return render_template('lab5/articles.html', articles=articles)

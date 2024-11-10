@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block lab %} Список статей {% endblock %} {% block
+main %}
+
+<h1>Список статей</h1>
+<a href="{{ url_for('lab5.create') }}">Создать статью</a>
+
+<div>
+    {% for article in articles %}
+    <div
+        style="
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            background-color: #f0f0f0;
+        "
+    >
+        <h2 style="font-size: 22px">{{ article.title }}</h2>
+        <div><p style="font-size: 20px">{{ article.article_text }}</p></div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
