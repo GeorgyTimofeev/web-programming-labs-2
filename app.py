@@ -1,5 +1,6 @@
 from flask import Flask, url_for, redirect, abort, render_template, request, session
 from werkzeug.exceptions import HTTPException
+import os
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
@@ -13,7 +14,8 @@ app.register_blueprint(lab3)
 app.register_blueprint(lab4)
 app.register_blueprint(lab5)
 
-app.secret_key = 'очень секретный ключ'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'very-secret-key')
+app.config['DB-TYPE'] = os.getenv('DB-TYPE', 'postres')
 
 @app.errorhandler(400)
 def bad_request(err):
