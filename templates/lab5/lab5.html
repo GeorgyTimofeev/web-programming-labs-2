@@ -1,0 +1,98 @@
+{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
+работа 5 {% endblock %} {# Основной контент: #} {% block main %}
+<h1>Flask и БД</h1>
+<div class="container">
+    <h2>База знаний</h2>
+
+    <ol
+        style="
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+        "
+    >
+        <li style="margin: 0 5px; flex: 1">
+            <a
+                href="/lab5/login"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition: background-color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                >Вход</a
+            >
+        </li>
+        <li style="margin: 0 5px; flex: 1">
+            <a
+                href="/lab5/register"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition: background-color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                >Регистрация</a
+            >
+        </li>
+        <li style="margin: 0 5px; flex: 1">
+            <a
+                href="/lab5/list"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition: background-color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                >Список статей</a
+            >
+        </li>
+        <li style="margin: 0 5px; flex: 1">
+            <a
+                href="/lab5/create"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition: background-color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                >Добавить статью</a
+            >
+        </li>
+    </ol>
+    <br />
+    {% if name %}
+    <h3 style="text-align: center; margin-top: 20px; color: #666">
+        {{ name }} ({{ login }})
+    </h3>
+    {% else %}
+    <h3 style="text-align: center; margin-top: 20px; color: #666">Anonymous</h3>
+    {% endif %}
+</div>
+{% endblock %}
