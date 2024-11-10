@@ -1,0 +1,123 @@
+{% extends "base.html" %} {% block lab %} Лабораторная работа 4 {% endblock %}
+{% block main %} {% if authorized %}
+<h1>Добро пожаловать, {{ name }}!</h1>
+<h2>Вы успешно авторизовались и теперь можете играть в боулинг</h2>
+<video
+    src="{{ url_for('static', filename='lab4/bowling.mp4') }}"
+    alt="Bowling_mp4"
+    style="width: 15%"
+    autoplay
+    loop
+></video>
+<div>
+    <form
+        action="/lab5/logout/"
+        method="POST"
+        style="text-align: left; margin-top: 20px"
+    >
+        <button
+            style="
+                background-color: rgb(88, 98, 84);
+                color: rgb(251, 249, 246);
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            "
+        >
+            Выход из аккаунта
+        </button>
+    </form>
+</div>
+{% else %}
+<body>
+    <h1>Вход</h1>
+    <h2>
+        Пожалуйста, авторизуйтесь или зарегистрируйтесь
+        <a href="/lab5/register">здесь</a>
+    </h2>
+    <form
+        method="post"
+        style="
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        "
+    >
+        <div style="margin-bottom: 15px">
+            <label for="login" style="display: block; margin-bottom: 5px"
+                ><h3>Логин:</h3></label
+            >
+            <input
+                type="text"
+                id="login"
+                name="login"
+                value="{{ login }}"
+                style="
+                    width: 95%;
+                    padding: 10px;
+                    border: 1px solid rgb(88, 98, 84);
+                    border-radius: 5px;
+                "
+            />
+        </div>
+        <div style="margin-bottom: 15px">
+            <label for="password" style="display: block; margin-bottom: 5px"
+                ><h3>Пароль:</h3></label
+            >
+            <input
+                type="password"
+                id="password"
+                name="password"
+                style="
+                    width: 95%;
+                    padding: 10px;
+                    border: 1px solid rgb(88, 98, 84);
+                    border-radius: 5px;
+                "
+            />
+        </div>
+        <div
+            style="
+                color: rgb(255, 69, 0);
+                font-weight: bold;
+                margin-bottom: 15px;
+                padding: 10px;
+            "
+        >
+            {{ error }}
+        </div>
+        <div style="text-align: center">
+            <button
+                type="submit"
+                style="
+                    background-color: rgb(88, 98, 84);
+                    color: rgb(251, 249, 246);
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                "
+            >
+                Войти
+            </button>
+            <button
+                type="reset"
+                style="
+                    background-color: rgb(88, 98, 84);
+                    color: rgb(251, 249, 246);
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                "
+            >
+                Отмена
+            </button>
+        </div>
+    </form>
+</body>
+{% endif %} {% endblock %}

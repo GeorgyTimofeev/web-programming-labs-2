@@ -1,6 +1,7 @@
 from os import close
 from flask import Blueprint, url_for, redirect, abort, render_template, request, make_response, session
 import psycopg2
+from psycopg2.extras import RealDictCursor
 
 lab5 = Blueprint('lab5',__name__)
 
@@ -10,7 +11,7 @@ def inject_current_lab():
 
 @lab5.route('/lab5/')
 def lab():
-    return render_template('lab5/lab5.html')
+    return render_template('lab5/lab5.html', login=session.get('login'))
 
 @lab5.route('/lab5/register/', methods=['GET', 'POST'])
 def register():
@@ -45,3 +46,41 @@ def register():
 
 
     return render_template('lab5/succes.html', login=login)
+
+@lab5.route('/lab5/login/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('lab5/login.html')
+
+    login = request.form.get('login')
+    password = request.form.get('password')
+
+    if not (login or password):
+        return render_template('lab5/login.html', error='Заполните все поля')
+
+    conn = psycopg2.connect(
+        host = '127.0.0.1',
+        database = 'georgy_timofeev_knowledge_base',
+        user = 'georgy_timofeev_knowledge_base',
+        password = 'web_password'
+    )
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    cur.execute(f"SELECT * FROM users WHERE login = '{login}';")
+    user = cur.fetchone()
+
+    if not user:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Пользователь не найден')
+
+    if user['password'] != password:
+        cur.close()
+        conn.close()
+        return render_template('lab5/login.html', error='Неверный пароль')
+
+    session['login'] = login
+
+    cur.close()
+    conn.close()
+    return render_template('lab5/succes_login.html', login=login)
