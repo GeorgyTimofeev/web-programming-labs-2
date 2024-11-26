@@ -20,17 +20,13 @@ def get_offices():
         cur.execute("SELECT o.number, o.price, o.is_booked, u.login AS tenant FROM offices o LEFT JOIN users u ON o.tenant_id = u.id ORDER BY o.number")
     else:
         cur.execute("SELECT o.number, o.price, o.is_booked, u.login AS tenant FROM offices o LEFT JOIN users u ON o.tenant_id = u.id ORDER BY o.number")
-    offices = cur.fetchall()
+    rows = cur.fetchall()
     db_close(conn, cur)
-    return offices
 
-def update_office_booking(office_number, tenant_id, is_booked):
-    conn, cur = db_connect()
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("UPDATE offices SET tenant_id = %s, is_booked = %s WHERE number = %s", (tenant_id, is_booked, office_number))
-    else:
-        cur.execute("UPDATE offices SET tenant_id = ?, is_booked = ? WHERE number = ?", (tenant_id, is_booked, office_number))
-    db_close(conn, cur)
+    # Преобразование объектов sqlite3.Row в словари
+    offices = [dict(row) for row in rows]
+
+    return offices
 
 @lab6.route('/lab6/')
 def lab():
