@@ -61,7 +61,6 @@
             .then(function (data) {
                 const office_list = data.result.offices;
                 const userTotalCost = data.result.user_total_cost;
-                const currentUser = data.result.current_user;
                 const ul = document.getElementById("office-list");
                 ul.innerHTML = "";
                 for (let i = 0; i < office_list.length; i++) {
@@ -72,7 +71,7 @@
                         li.classList.add("booked");
                     }
                     li.innerHTML = `<h2>Офис ${office.number}</h2>
-                                    <p>${office.tenant || "свободен"} (Стоимость: ${office.price} руб.)</p>`;
+                                <p>${office.tenant || "свободен"} (Стоимость: ${office.price} руб.)</p>`;
 
                     if (!office.tenant) {
                         const bookingButton = document.createElement("button");
@@ -105,7 +104,6 @@
                 }
             });
     }
-
     function booking(officeNumber) {
         const url = "/lab6/json-rpc-api/";
         const json = {
