@@ -28,6 +28,14 @@ def get_offices():
 
     return offices
 
+def update_office_booking(office_number, tenant_id, is_booked):
+    conn, cur = db_connect()
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("UPDATE offices SET tenant_id = %s, is_booked = %s WHERE number = %s", (tenant_id, is_booked, office_number))
+    else:
+        cur.execute("UPDATE offices SET tenant_id = ?, is_booked = ? WHERE number = ?", (tenant_id, is_booked, office_number))
+    db_close(conn, cur)
+
 @lab6.route('/lab6/')
 def lab():
     return render_template('lab6/lab6.html')
