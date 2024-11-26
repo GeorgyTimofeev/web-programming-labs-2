@@ -15,7 +15,7 @@ def inject_current_lab():
 
 offices = []
 for i in range (1, 11):
-    offices.append({"number": i, "tenant": ""})
+    offices.append({"number": i, "tenant": "", "price": 800+round((i**4)*3/2)})
 
 @lab6.route('/lab6/')
 def lab():
@@ -26,9 +26,18 @@ def api():
     data = request.json
     id = data['id']
     if data['method'] == 'info':
+        user_total_cost = 0
+        login = session.get('login')
+        if login:
+            for office in offices:
+                if office['tenant'] == login:
+                    user_total_cost += office['price']
         return {
             'jsonrpc': '2.0',
-            'result': offices,
+            'result': {
+                'offices': offices,
+                'user_total_cost': user_total_cost
+            },
             'id': id
         }
     login = session.get('login')

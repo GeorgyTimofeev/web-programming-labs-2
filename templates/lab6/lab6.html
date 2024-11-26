@@ -1,5 +1,47 @@
 {% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
-работа 6 {% endblock %} {% block script %}
+работа 6 {% endblock %} {% block style %}
+<style>
+    .office-card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 8px;
+        box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.1);
+        width: 400px;
+        display: inline-block;
+        vertical-align: top;
+        transition: all 0.3s ease;
+    }
+    .office-card:hover {
+        display: absolute;
+        transform: scale(1.05);
+        z-index: 10;
+    }
+    .office-card h2 {
+        margin-top: 0;
+    }
+    .office-card button {
+        margin-right: 8px;
+    }
+    .office-card.booked {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+    .office-card.booked p {
+        color: #721c24;
+    }
+    #total-cost {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        font-weight: bold;
+    }
+    ul#office-list {
+        list-style-type: none;
+        padding: 0;
+    }
+</style>
+{% endblock %} {% block script %}
 <script>
     function getOfficeList() {
         const url = "/lab6/json-rpc-api/";
@@ -17,19 +59,29 @@
                 return response.json();
             })
             .then(function (data) {
-                const office_list = data.result;
+                const office_list = data.result.offices;
+                const userTotalCost = data.result.user_total_cost;
+                const currentUser = data.result.current_user;
                 const ul = document.getElementById("office-list");
+                ul.innerHTML = "";
                 for (let i = 0; i < office_list.length; i++) {
                     const office = office_list[i];
                     const li = document.createElement("li");
-                    li.innerText = `${office.number}: ${office.tenant || "свободен"}`;
+                    li.className = "office-card";
+                    if (office.tenant) {
+                        li.classList.add("booked");
+                    }
+                    li.innerHTML = `<h2>Офис ${office.number}</h2>
+                                    <p>${office.tenant || "свободен"} (Стоимость: ${office.price} руб.)</p>`;
 
-                    const bookingButton = document.createElement("button");
-                    bookingButton.innerText = "Забронировать";
-                    bookingButton.onclick = function () {
-                        booking(office.number);
-                    };
-                    li.appendChild(bookingButton);
+                    if (!office.tenant) {
+                        const bookingButton = document.createElement("button");
+                        bookingButton.innerText = "Забронировать";
+                        bookingButton.onclick = function () {
+                            booking(office.number);
+                        };
+                        li.appendChild(bookingButton);
+                    }
 
                     if (office.tenant) {
                         const cancelButton = document.createElement("button");
@@ -41,6 +93,15 @@
                     }
 
                     ul.appendChild(li);
+                }
+                const totalCostElement = document.getElementById("total-cost");
+                if (!totalCostElement) {
+                    const totalCostDiv = document.createElement("div");
+                    totalCostDiv.id = "total-cost";
+                    totalCostDiv.innerText = `Общая стоимость аренды: ${userTotalCost} руб.`;
+                    document.body.appendChild(totalCostDiv);
+                } else {
+                    totalCostElement.innerText = `Общая стоимость аренды: ${userTotalCost} руб.`;
                 }
             });
     }
@@ -131,4 +192,5 @@
 {% endblock %} {% block main %}
 <h1>Список кабинетов</h1>
 <ul id="office-list"></ul>
+<a href="/lab5/login"><button>Авторизация</button></a>
 {% endblock %}
