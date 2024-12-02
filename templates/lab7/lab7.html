@@ -29,6 +29,42 @@ block style %}
         font-style: italic;
         color: #888;
     }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50%;
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        z-index: 1000;
+    }
+    .modal.active {
+        display: block;
+    }
+    .modal input {
+        width: 100%;
+    }
+    .modal label {
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+    .modal div:nth-child(4) {
+        margin-bottom: 20px;
+    }
+    .modal button {
+        margin: 10px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .modal input#description {
+            height: 80px;
+            resize: vertical;
+        }
 </style>
 </style>
 </style>
@@ -54,5 +90,31 @@ block style %}
     });
 </script>
 
-<button onclick="add_film()">Добавить фильм</button>
+<button onclick="addFilm()">Добавить фильм</button>
+
+<div class="modal">
+    <input type="hidden" id="id">
+    <h1>Добавление фильма</h1>
+    <div>
+        <label for="title-ru">Название на русском:</label>
+        <input type="text" id="title-ru">
+    </div>
+    <div>
+        <label for="title">Оригинальное название:</label>
+        <input type="text" id="title">
+    </div>
+    <div>
+        <label for="year">Год выпуска:</label>
+        <input type="text" id="year">
+    </div>
+    <div>
+        <label for="imdb">Рейтинг IMDB:</label>
+        <input type="text" id="imdb">
+    <div>
+        <label for="description">Описание:</label>
+        <input type="text" id="description">
+    </div>
+    <button onclick="sendFilm()">Сохранить</button>
+    <button onclick="cancel()">Отмена</button>
+</div>
 {% endblock %}
