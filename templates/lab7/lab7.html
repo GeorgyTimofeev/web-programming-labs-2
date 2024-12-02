@@ -1,3 +1,58 @@
-{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
-работа 7 {% endblock %} {% block style %}{% endblock %} {% block script %}{%
-endblock %} {% block main %}{% endblock %}
+{% extends "base.html" %} {% block lab %}Лабораторная работа 7 {% endblock %} {%
+block style %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    th,
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    button {
+        margin: 20px;
+    }
+    td:nth-child(4) {
+        text-align: center;
+    }
+    td:nth-child(2) {
+        font-style: italic;
+        color: #888;
+    }
+</style>
+</style>
+</style>
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='lab7/main.js') }}" defer></script>
+{% endblock %} {% block main %}
+<h1>Cписок фильмов</h1>
+<table>
+    <thead>
+        <tr>
+            <th colspan="2">Название</th>
+            <th>Год</th>
+            <th>Рейтинг IMDB</th>
+            <th>Действие</th>
+        </tr>
+    </thead>
+    <tbody id="film-list"></tbody>
+</table>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fillFilmList();
+    });
+</script>
+
+<button onclick="add_film()">Добавить фильм</button>
+{% endblock %}

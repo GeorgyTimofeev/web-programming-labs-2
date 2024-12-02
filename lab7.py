@@ -60,7 +60,7 @@ films = [
     },
 ]
 
-@lab7.route('/lab7/rest-api/films', methods=['GET'])
+@lab7.route('/lab7/rest-api/films/', methods=['GET'])
 def get_films():
     return films
 
@@ -88,11 +88,15 @@ def put_film(id):
         return abort(404)
 
     else:
+        if not film.get("title") and film.get("title_ru"):
+            film["title"] = film["title_ru"]
         films[id] = film
         return films[id]
 
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
     new_film = request.get_json()
+    if not new_film.get("title") and new_film.get("title_ru"):
+        new_film["title"] = new_film["title_ru"]
     films.append(new_film)
     return {'id': len(films) - 1}, 201
