@@ -1,6 +1,7 @@
 from os import close
 from flask import Blueprint, url_for, redirect, abort, render_template, request, make_response, session, current_app
 from flask.cli import main
+from datetime import datetime
 from flask.templating import render_template_string
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -83,24 +84,55 @@ def del_film(id):
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
 def put_film(id):
-    film = request.get_json()
-    if id > (len(films)-1) or id < 0:
-        return abort(404)
-
-    else:
-        if film["description"] == '':
-            return {"description": "Заполните описание"}, 400
-        if (not film.get("title") or film.get("title") == '') and film.get("title_ru"):
-            film["title"] = film["title_ru"]
-        films[id] = film
-        return films[id]
+    try:
+        film = request.get_json()
+        current_year = datetime.now().year
+        if id > (len(films)-1) or id < 0:
+            return {"error": "Фильм не найден"}, 404
+        else:
+            if "title" not in film and "title_ru" not in film:
+                return {"title": "Заполните название или русское название"}, 400
+            if "title_ru" not in film or film["title_ru"] == '':
+                return {"title_ru": "Заполните русское название"}, 400
+            if "title" not in film or film["title"] == '':
+                film["title"] = film["title_ru"]
+            if "year" not in film:
+                return {"year": "Заполните год выпуска"}, 400
+            try:
+                year = int(film["year"])
+            except ValueError:
+                return {"year": "Год должен быть числом"}, 400
+            if not (1895 <= year <= current_year):
+                return {"year": "Год должен быть от 1895 до текущего года"}, 400
+            if "description" not in film or film["description"] == '' or len(film["description"]) > 2000:
+                return {"description": "Заполните описание (не более 2000 символов)"}, 400
+            films[id] = film
+            return film
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
-    new_film = request.get_json()
-    if new_film["description"] == '':
-        return {"description": "Заполните описание"}, 400
-    if (not new_film.get("title") or new_film.get("title") == '') and new_film.get("title_ru"):
-        new_film["title"] = new_film["title_ru"]
-    films.append(new_film)
-    return {'id': len(films) - 1}, 201
+    try:
+        new_film = request.get_json()
+        current_year = datetime.now().year
+        if "title" not in new_film and "title_ru" not in new_film:
+            return {"title": "Заполните название или русское название"}, 400
+        if "title_ru" not in new_film or new_film["title_ru"] == '':
+            return {"title_ru": "Заполните русское название"}, 400
+        if "title" not in new_film or new_film["title"] == '':
+            new_film["title"] = new_film["title_ru"]
+        if "year" not in new_film:
+            return {"year": "Заполните год выпуска"}, 400
+        try:
+            year = int(new_film["year"])
+        except ValueError:
+            return {"year": "Год должен быть числом"}, 400
+        if not (1895 <= year <= current_year):
+            return {"year": "Год должен быть от 1895 до текущего года"}, 400
+        if "description" not in new_film or new_film["description"] == '' or len(new_film["description"]) > 2000:
+            return {"description": "Заполните описание (не более 2000 символов)"}, 400
+        films.append(new_film)
+        return {'id': len(films) - 1}, 201
+    except Exception as e:
+        return {"error": str(e)}, 500

@@ -55,6 +55,9 @@ function deleteFilm(id, title) {
 }
 
 function showModal() {
+  document.getElementById("title-ru-error").innerHTML = "";
+  document.getElementById("title-error").innerHTML = "";
+  document.getElementById("year-error").innerHTML = "";
   document.getElementById("description-error").innerHTML = "";
   document.querySelector("div.modal").style.display = "block";
 }
@@ -106,9 +109,12 @@ function sendFilm() {
       return resp.json();
     })
     .then(function (errors) {
-      if (errors.description)
-        document.getElementById("description-error").innerHTML =
-          errors.description;
+      document.getElementById("title-ru-error").innerHTML =
+        errors.title_ru || "";
+      document.getElementById("title-error").innerHTML = errors.title || "";
+      document.getElementById("year-error").innerHTML = errors.year || "";
+      document.getElementById("description-error").innerHTML =
+        errors.description || "";
     });
 }
 
