@@ -18,24 +18,33 @@ def main():
 
 @lab7.route('/lab7/rest-api/films/', methods=['GET'])
 def get_films():
-    conn, cur = db_connect()
-    cur.execute("SELECT * FROM films")
-    films = cur.fetchall()
-    db_close(conn, cur)
-    return films
+    try:
+        conn, cur = db_connect()
+        cur.execute("SELECT * FROM films")
+        films = cur.fetchall()
+        db_close(conn, cur)
+        # Преобразование объектов Row в словари
+        films = [dict(film) for film in films]
+        return films
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_film(id):
-    conn, cur = db_connect()
-    if current_app.config['DB_TYPE'] == 'postgres':
-        cur.execute("SELECT * FROM films WHERE id = %s", (id,))
-    else:
-        cur.execute("SELECT * FROM films WHERE id = ?", (id,))
-    film = cur.fetchone()
-    db_close(conn, cur)
-    if not film:
-        return abort(404)
-    return film
+    try:
+        conn, cur = db_connect()
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT * FROM films WHERE id = %s", (id,))
+        else:
+            cur.execute("SELECT * FROM films WHERE id = ?", (id,))
+        film = cur.fetchone()
+        db_close(conn, cur)
+        if not film:
+            return {"error": "Фильм не найден"}, 404
+        # Преобразование объекта Row в словарь
+        return dict(film)
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
@@ -153,9 +162,9 @@ def add_film():
         current_year = datetime.now().year
         if "title" not in new_film and "title_ru" not in new_film:
             return {"title": "Заполните название или русское название"}, 400
-        if "title_ru" not in new_film or new_film["title_ru"] == '':
+        if "title_ru" not in new_film или new_film["title_ru"] == '':
             return {"title_ru": "Заполните русское название"}, 400
-        if "title" not in new_film or new_film["title"] == '':
+        if "title" not in new_film или new_film["title"] == '':
             new_film["title"] = new_film["title_ru"]
         if "year" not in new_film:
             return {"year": "Заполните год выпуска"}, 400
@@ -165,20 +174,23 @@ def add_film():
             return {"year": "Год должен быть числом"}, 400
         if not (1895 <= year <= current_year):
             return {"year": "Год должен быть от 1895 до текущего года"}, 400
-        if "description" not in new_film or new_film["description"] == '' or len(new_film["description"]) > 2000:
+        if "description" not in new_film или new_film["description"] == '' или len(new_film["description"]) > 2000:
             return {"description": "Заполните описание (не более 2000 символов)"}, 400
 
         if current_app.config['DB_TYPE'] == 'postgres':
             cur.execute("""
                 INSERT INTO films (user_id, title, title_ru, year, description, imdb)
                 VALUES (%s, %s, %s, %s, %s, %s)
+                RETURNING id
             """, (user['id'], new_film["title"], new_film["title_ru"], new_film["year"], new_film["description"], new_film.get("imdb")))
+            new_id = cur.fetchone()['id']
         else:
             cur.execute("""
                 INSERT INTO films (user_id, title, title_ru, year, description, imdb)
                 VALUES (?, ?, ?, ?, ?, ?)
             """, (user['id'], new_film["title"], new_film["title_ru"], new_film["year"], new_film["description"], new_film.get("imdb")))
+            new_id = cur.lastrowid
         db_close(conn, cur)
-        return {'id': cur.lastrowid}, 201
+        return {'id': new_id}, 201
     except Exception as e:
         return {"error": str(e)}, 500
