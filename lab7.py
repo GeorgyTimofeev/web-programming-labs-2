@@ -162,9 +162,9 @@ def add_film():
         current_year = datetime.now().year
         if "title" not in new_film and "title_ru" not in new_film:
             return {"title": "Заполните название или русское название"}, 400
-        if "title_ru" not in new_film или new_film["title_ru"] == '':
+        if "title_ru" not in new_film or new_film["title_ru"] == '':
             return {"title_ru": "Заполните русское название"}, 400
-        if "title" not in new_film или new_film["title"] == '':
+        if "title" not in new_film or new_film["title"] == '':
             new_film["title"] = new_film["title_ru"]
         if "year" not in new_film:
             return {"year": "Заполните год выпуска"}, 400
@@ -174,7 +174,7 @@ def add_film():
             return {"year": "Год должен быть числом"}, 400
         if not (1895 <= year <= current_year):
             return {"year": "Год должен быть от 1895 до текущего года"}, 400
-        if "description" not in new_film или new_film["description"] == '' или len(new_film["description"]) > 2000:
+        if "description" not in new_film or new_film["description"] == '' or len(new_film["description"]) > 2000:
             return {"description": "Заполните описание (не более 2000 символов)"}, 400
 
         if current_app.config['DB_TYPE'] == 'postgres':
