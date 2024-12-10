@@ -1,16 +1,12 @@
-from os import close
-from flask import Blueprint, url_for, redirect, abort, render_template, request, make_response, session, current_app
-from flask.cli import main
+from flask import Blueprint, url_for, redirect, abort, render_template, request, make_response, session, current_app, flash
 from datetime import datetime
-from flask.templating import render_template_string
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from os import path
 from lab5 import db_connect, db_close
 
-lab7 = Blueprint('lab7',__name__)
+lab7 = Blueprint('lab7', __name__)
 
 @lab7.context_processor
 def inject_current_lab():
@@ -20,100 +16,139 @@ def inject_current_lab():
 def main():
     return render_template("lab7/lab7.html")
 
-films = [
-    {
-        "title": "mother!",
-        "title_ru": "мама!",
-        "year": 2017,
-        "description": "Отношения молодой пары оказываются под угрозой, когда, нарушая безмятежное существование супругов, в их дом заявляются незваные гости.",
-        "IMDB": 6.60
-
-    },
-    {
-        "title": "Antichrist",
-        "title_ru": "Антихрист",
-        "year": 2009,
-        "description": "Немолодая пара теряет сына - двухлетний мальчик падает из окна, когда родители занимаются любовью. Чувство вины буквально сводит с ума мать ребенка, его отец-психотерапевт пытается помочь жене и увозит её в старый дом в лесной чаще. Там супруги погружаются в мир странных символов, в их жизнь проникает безумие и насилие.",
-        "IMDB": 6.50
-    },
-
-    {
-        "title": "The Big Short",
-        "title_ru": "Игра на понижение",
-        "year": 2015,
-        "description": "2005 год. Изучая данные ипотек по стране, чудаковатый финансовый гений и управляющий хедж-фонда Scion Capital Майкл Бьюрри обращает внимание на одну деталь и приходит к выводу, что американский рынок ипотечных кредитов может скоро лопнуть. В связи с этим он страхует около миллиарда долларов своих клиентов через кредитный дефолтный своп. Клиенты фонда Бьюрри волнуются из-за возможных потерь, ведь рынок ипотечных кредитов представляется весьма стабильным, но Майкл твёрдо стоит на своём. Вскоре эту странную активность замечают несколько финансистов на Уолл-стрит. Изучив данные, они осознают, что опасения Бьюрри имеют под собой веские основания. Более того, сыграв на понижение, можно заработать миллионы.",
-        "IMDB": 7.80
-    },
-    {
-        "title": "Drugstore Cowboy",
-        "title_ru": "Аптечный ковбой",
-        "year": 1989,
-        "description": "В поисках наркотиков они грабят аптеки, убегают от полиции, и это похоже на игру - полицейские и воры. Главное - следить за приметами: ни в коем случае не говорить о собаках, не смотреться в зеркало с обратной стороны, и самое главное - никогда не класть шляпу на кровать. Для Боба наркотики - не просто способ получения удовольствия, скорее возможность убежать от невыносимой реальности жизни. Создать свой мир, где нет нудных обязанностей и глупых обывателей и где ты полновластный хозяин. В отличие от своих друзей, Боб знает, какую цену придется платить за это бегство, отсюда и вера в приметы. Но когда-нибудь игра закончится...",
-        "IMDB": 7.20
-    },
-
-    {
-        "title": "Le cercle rouge",
-        "title_ru": "Красный круг",
-        "year": 1970,
-        "description": "Перед выходом на свободу известный преступник Коре получает от охранника наводку на модный ювелирный магазин. Освободившись, он наносит ночной визит бывшему партнёру Рико, из-за которого оказался в тюрьме, и грабит его. Преследуемый подручными Рико, Коре отправляется из Марселя в Париж и в пути спасает недавно сбежавшего бандита Вожеля, которого сопровождал к месту заключения комиссар Маттей. Два преступника становятся преданными друзьями и решают осуществить ограбление по наводке Коре, но матёрый и хитрый комиссар Маттей не дремлет.",
-        "IMDB": 7.90
-    },
-]
-
 @lab7.route('/lab7/rest-api/films/', methods=['GET'])
 def get_films():
+    conn, cur = db_connect()
+    cur.execute("SELECT * FROM films")
+    films = cur.fetchall()
+    db_close(conn, cur)
     return films
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['GET'])
 def get_film(id):
-    if id > (len(films)-1) or id < 0:
-        return abort(404)
-
+    conn, cur = db_connect()
+    if current_app.config['DB_TYPE'] == 'postgres':
+        cur.execute("SELECT * FROM films WHERE id = %s", (id,))
     else:
-        return films[id]
+        cur.execute("SELECT * FROM films WHERE id = ?", (id,))
+    film = cur.fetchone()
+    db_close(conn, cur)
+    if not film:
+        return abort(404)
+    return film
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['DELETE'])
 def del_film(id):
-    if id > (len(films)-1) or id < 0:
-        return abort(404)
+    login = session.get('login')
+    if not login:
+        return {"error": "Пользователь не авторизован"}, 403
 
-    else:
-        del films[id]
+    try:
+        conn, cur = db_connect()
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT user_id FROM films WHERE id = %s", (id,))
+        else:
+            cur.execute("SELECT user_id FROM films WHERE id = ?", (id,))
+        film = cur.fetchone()
+        if not film:
+            db_close(conn, cur)
+            return {"error": "Фильм не найден"}, 404
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id FROM users WHERE login = %s", (login,))
+        else:
+            cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+        user = cur.fetchone()
+        if not user or user['id'] != film['user_id']:
+            db_close(conn, cur)
+            return {"error": "Пользователь не авторизован или не является автором фильма"}, 403
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("DELETE FROM films WHERE id = %s", (id,))
+        else:
+            cur.execute("DELETE FROM films WHERE id = ?", (id,))
+        db_close(conn, cur)
         return '', 204
+    except Exception as e:
+        return {"error": str(e)}, 500
 
 @lab7.route('/lab7/rest-api/films/<int:id>', methods=['PUT'])
 def put_film(id):
+    login = session.get('login')
+    if not login:
+        return {"error": "Пользователь не авторизован"}, 403
+
     try:
-        film = request.get_json()
-        current_year = datetime.now().year
-        if id > (len(films)-1) or id < 0:
-            return {"error": "Фильм не найден"}, 404
+        conn, cur = db_connect()
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT user_id FROM films WHERE id = %s", (id,))
         else:
-            if "title" not in film and "title_ru" not in film:
-                return {"title": "Заполните название или русское название"}, 400
-            if "title_ru" not in film or film["title_ru"] == '':
-                return {"title_ru": "Заполните русское название"}, 400
-            if "title" not in film or film["title"] == '':
-                film["title"] = film["title_ru"]
-            if "year" not in film:
-                return {"year": "Заполните год выпуска"}, 400
-            try:
-                year = int(film["year"])
-            except ValueError:
-                return {"year": "Год должен быть числом"}, 400
-            if not (1895 <= year <= current_year):
-                return {"year": "Год должен быть от 1895 до текущего года"}, 400
-            if "description" not in film or film["description"] == '' or len(film["description"]) > 2000:
-                return {"description": "Заполните описание (не более 2000 символов)"}, 400
-            films[id] = film
-            return film
+            cur.execute("SELECT user_id FROM films WHERE id = ?", (id,))
+        film = cur.fetchone()
+        if not film:
+            db_close(conn, cur)
+            return {"error": "Фильм не найден"}, 404
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id FROM users WHERE login = %s", (login,))
+        else:
+            cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+        user = cur.fetchone()
+        if not user or user['id'] != film['user_id']:
+            db_close(conn, cur)
+            return {"error": "Пользователь не авторизован или не является автором фильма"}, 403
+
+        film_data = request.get_json()
+        current_year = datetime.now().year
+        if "title" not in film_data and "title_ru" not in film_data:
+            return {"title": "Заполните название или русское название"}, 400
+        if "title_ru" not in film_data or film_data["title_ru"] == '':
+            return {"title_ru": "Заполните русское название"}, 400
+        if "title" not in film_data or film_data["title"] == '':
+            film_data["title"] = film_data["title_ru"]
+        if "year" not in film_data:
+            return {"year": "Заполните год выпуска"}, 400
+        try:
+            year = int(film_data["year"])
+        except ValueError:
+            return {"year": "Год должен быть числом"}, 400
+        if not (1895 <= year <= current_year):
+            return {"year": "Год должен быть от 1895 до текущего года"}, 400
+        if "description" not in film_data or film_data["description"] == '' or len(film_data["description"]) > 2000:
+            return {"description": "Заполните описание (не более 2000 символов)"}, 400
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                UPDATE films SET title = %s, title_ru = %s, year = %s, description = %s, imdb = %s
+                WHERE id = %s
+            """, (film_data["title"], film_data["title_ru"], film_data["year"], film_data["description"], film_data.get("imdb"), id))
+        else:
+            cur.execute("""
+                UPDATE films SET title = ?, title_ru = ?, year = ?, description = ?, imdb = ?
+                WHERE id = ?
+            """, (film_data["title"], film_data["title_ru"], film_data["year"], film_data["description"], film_data.get("imdb"), id))
+        db_close(conn, cur)
+        return film_data
     except Exception as e:
         return {"error": str(e)}, 500
 
 @lab7.route('/lab7/rest-api/films/', methods=['POST'])
 def add_film():
+    login = session.get('login')
+    if not login:
+        return {"error": "Пользователь не авторизован"}, 403
+
     try:
+        conn, cur = db_connect()
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("SELECT id FROM users WHERE login = %s", (login,))
+        else:
+            cur.execute("SELECT id FROM users WHERE login = ?", (login,))
+        user = cur.fetchone()
+        if not user:
+            db_close(conn, cur)
+            return {"error": "Пользователь не найден"}, 403
+
         new_film = request.get_json()
         current_year = datetime.now().year
         if "title" not in new_film and "title_ru" not in new_film:
@@ -132,7 +167,18 @@ def add_film():
             return {"year": "Год должен быть от 1895 до текущего года"}, 400
         if "description" not in new_film or new_film["description"] == '' or len(new_film["description"]) > 2000:
             return {"description": "Заполните описание (не более 2000 символов)"}, 400
-        films.append(new_film)
-        return {'id': len(films) - 1}, 201
+
+        if current_app.config['DB_TYPE'] == 'postgres':
+            cur.execute("""
+                INSERT INTO films (user_id, title, title_ru, year, description, imdb)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """, (user['id'], new_film["title"], new_film["title_ru"], new_film["year"], new_film["description"], new_film.get("imdb")))
+        else:
+            cur.execute("""
+                INSERT INTO films (user_id, title, title_ru, year, description, imdb)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (user['id'], new_film["title"], new_film["title_ru"], new_film["year"], new_film["description"], new_film.get("imdb")))
+        db_close(conn, cur)
+        return {'id': cur.lastrowid}, 201
     except Exception as e:
         return {"error": str(e)}, 500

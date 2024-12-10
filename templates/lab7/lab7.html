@@ -63,22 +63,21 @@ block style %}
         margin-top: 10px;
     }
     .modal textarea#description {
-            width: 100%;
-            height: 80px;
-            resize: vertical;
-        }
+        width: 100%;
+        height: 80px;
+        resize: vertical;
+    }
     .error-message {
-            color: red;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-</style>
-</style>
+        color: red;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
 </style>
 {% endblock %} {% block script %}
 <script src="{{ url_for('static', filename='lab7/main.js') }}" defer></script>
 {% endblock %} {% block main %}
 <h1>Cписок фильмов</h1>
+
 <table>
     <thead>
         <tr>
@@ -98,28 +97,29 @@ block style %}
 </script>
 
 <button onclick="addFilm()">Добавить фильм</button>
+<a href="/lab5/login"><button>Авторизация</button></a>
 
 <div class="modal">
-    <input type="hidden" id="id">
+    <input type="hidden" id="id" />
     <h1>Добавление фильма</h1>
     <div>
         <label for="title-ru">Название на русском:</label>
-        <input type="text" id="title-ru">
+        <input type="text" id="title-ru" />
         <div id="title-ru-error" class="error-message"></div>
     </div>
     <div>
         <label for="title">Оригинальное название:</label>
-        <input type="text" id="title">
+        <input type="text" id="title" />
         <div id="title-error" class="error-message"></div>
     </div>
     <div>
         <label for="year">Год выпуска:</label>
-        <input type="text" id="year">
+        <input type="text" id="year" />
         <div id="year-error" class="error-message"></div>
     </div>
     <div>
         <label for="imdb">Рейтинг IMDB:</label>
-        <input type="text" id="imdb">
+        <input type="text" id="imdb" />
     </div>
     <div>
         <label for="description">Описание:</label>
