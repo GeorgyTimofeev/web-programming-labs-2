@@ -1,6 +1,9 @@
 from flask import Flask, url_for, redirect, abort, render_template, request, session
 from werkzeug.exceptions import HTTPException
+from flask_sqlalchemy import SQLAlchemy
+from db import db
 import os
+from os import path
 from lab1 import lab1
 from lab2 import lab2
 from lab3 import lab3
@@ -20,8 +23,25 @@ app.register_blueprint(lab6)
 app.register_blueprint(lab7)
 app.register_blueprint(lab8)
 
+
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'very-secret-key')
 app.config['DB_TYPE'] = os.getenv('DB_TYPE', 'postgres')
+
+
+if app.config['DB_TYPE'] == 'postgres':
+    db_name = "georgy_timofeev_orm"
+    db_user = "georgy_timofeev_orm"
+    db_password = "postgres"
+    host_ip = "127.0.0.1"
+    host_port = "5432"
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{host_ip}:{host_port}/{db_name}'
+else:
+    dir_path = path.dirname(os.path.realpath(__file__))
+    db_path = path.join(dir_path, 'db.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+
+db.init_app(app)
 
 @app.errorhandler(400)
 def bad_request(err):
