@@ -1,0 +1,119 @@
+{% extends "base.html" %} {% block lab %} Мои статьи {% endblock %} {% block
+main %}
+<h1>Мои статьи</h1>
+
+<div style="margin-bottom: 20px">
+    <a
+        href="{{ url_for('lab8.create_article') }}"
+        style="
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            background-color: rgb(88, 98, 84);
+            color: rgb(251, 249, 246);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        "
+    >
+        Создать новую статью
+    </a>
+</div>
+
+{% if articles %}
+<div
+    style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: flex-start;
+    "
+>
+    {% for article in articles %}
+    <div
+        style="
+            background-color: rgb(251, 249, 246);
+            border: 2px solid rgb(88, 98, 84);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(88, 98, 84, 0.1);
+            width: 60%;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            transform: translateY(0);
+        "
+    >
+        <div style="margin-top: 30px">
+            <h2 style="color: rgb(88, 98, 84); margin-bottom: 15px">
+                {{ article.title }}
+            </h2>
+            <div>
+                <p
+                    style="
+                        margin: 20px 0;
+                        color: rgb(88, 98, 84);
+                        line-height: 1.5;
+                    "
+                >
+                    {{ article.article_text }}
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px">
+            <div
+                style="display: flex; justify-content: space-between; gap: 10px"
+            >
+                <a
+                    href="{{ url_for('lab8.edit_article', article_id=article.id) }}"
+                >
+                    Редактировать
+                </a>
+                <form
+                    action="{{ url_for('lab8.delete_article', article_id=article.id) }}"
+                    method="post"
+                    style="display: inline"
+                >
+                    <button
+                        type="submit"
+                        style="
+                            padding: 8px 16px;
+                            background-color: rgb(88, 98, 84);
+                            color: rgb(251, 249, 246);
+                            border: none;
+                            border-radius: 10px;
+                            cursor: pointer;
+                            transition: background-color 0.3s ease;
+                        "
+                        onclick="return confirm('Вы уверены, что хотите удалить эту статью?')"
+                    >
+                        Удалить
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {% if not article.is_public %}
+        <div
+            style="
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background-color: rgb(88, 98, 84);
+                padding: 2px 8px;
+                border-radius: 5px;
+                color: rgb(251, 249, 246);
+            "
+        >
+            Личная
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>У вас нет ни одной статьи.</p>
+{% endif %} {% endblock %}

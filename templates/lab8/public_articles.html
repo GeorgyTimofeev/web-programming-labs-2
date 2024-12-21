@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block lab %} Публичные статьи {% endblock %} {%
+block main %}
+<h1>Публичные статьи</h1>
+
+<div style="margin-bottom: 20px">
+    <a
+        href="{{ url_for('lab8.create_article') }}"
+        style="
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            background-color: rgb(88, 98, 84);
+            color: rgb(251, 249, 246);
+            text-decoration: none;
+            border-radius: 10px;
+            transition: background-color 0.3s ease;
+        "
+    >
+        Создать статью
+    </a>
+</div>
+
+{% if articles %}
+<div
+    style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: flex-start;
+    "
+>
+    {% for article in articles %}
+    <div
+        style="
+            background-color: rgb(251, 249, 246);
+            border: 2px solid rgb(88, 98, 84);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(88, 98, 84, 0.1);
+            width: 60%;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            transform: translateY(0);
+        "
+    >
+        <!-- Информация об авторе -->
+        <p style="position: absolute; top: 10px; right: 10px; margin: 0">
+            Автор:
+            <span
+                style="
+                    color: rgb(88, 98, 84);
+                    background-color: transparent;
+                    padding: 2px 5px;
+                    border-radius: 5px;
+                "
+            >
+                {{ article.user.login }}
+            </span>
+        </p>
+
+        <!-- Содержание статьи -->
+        <div style="margin-top: 30px">
+            <h2 style="color: rgb(88, 98, 84); margin-bottom: 15px">
+                {{ article.title }}
+            </h2>
+            <div>
+                <p
+                    style="
+                        margin: 20px 0;
+                        color: rgb(88, 98, 84);
+                        line-height: 1.5;
+                    "
+                >
+                    {{ article.article_text }}
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Нет публичных статей.</p>
+{% endif %} {% endblock %}

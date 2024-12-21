@@ -1,6 +1,6 @@
-{% extends "base.html" %} {% block lab %} Лабораторная работа 5 {% endblock %}
-{% block main %} {% if authorized %}
-<h1>Добро пожаловать, {{ name }}!</h1>
+{% extends "base.html" %} {% block lab %} Лабораторная работа 8 {% endblock %}
+{% block main %} {% if current_user.is_authenticated %}
+<h1>Добро пожаловать, {{ current_user.login }}!</h1>
 <h2>Вы успешно авторизовались и теперь можете играть в боулинг</h2>
 <video
     src="{{ url_for('static', filename='lab4/bowling.mp4') }}"
@@ -11,7 +11,7 @@
 ></video>
 <div>
     <form
-        action="/lab8/logout/"
+        action="{{ url_for('lab8.logout') }}"
         method="POST"
         style="text-align: left; margin-top: 20px"
     >
@@ -74,6 +74,22 @@
                 name="password"
                 style="
                     width: 95%;
+                    padding: 10px;
+                    border: 1px solid rgb(88, 98, 84);
+                    border-radius: 5px;
+                "
+            />
+        </div>
+        <div style="margin-bottom: 15px">
+            <label for="remember_me" style="display: block; margin-bottom: 5px"
+                ><h3>Запомнить меня:</h3></label
+            >
+            <input
+                type="checkbox"
+                id="remember_me"
+                name="remember_me"
+                style="
+                    width: auto;
                     padding: 10px;
                     border: 1px solid rgb(88, 98, 84);
                     border-radius: 5px;

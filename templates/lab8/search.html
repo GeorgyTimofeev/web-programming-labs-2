@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% block lab %} Поиск статей {% endblock %} {% block
+main %}
+<h1>Поиск статей</h1>
+<form method="post" action="{{ url_for('lab8.search_articles') }}">
+    <div class="form-group">
+        <label for="query">Введите строку для поиска:</label>
+        <input
+            type="text"
+            id="query"
+            name="query"
+            class="form-control"
+            value="{{ query }}"
+        />
+    </div>
+    <button type="submit" class="btn btn-primary">Поиск</button>
+</form>
+
+{% if articles %}
+<div
+    style="
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 20px;
+        justify-content: flex-start;
+    "
+>
+    {% for article in articles %}
+    <div
+        style="
+            background-color: rgb(251, 249, 246);
+            border: 2px solid rgb(88, 98, 84);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(88, 98, 84, 0.1);
+            width: 60%;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            transform: translateY(0);
+        "
+    >
+        <div style="margin-top: 30px">
+            <h2 style="color: rgb(88, 98, 84); margin-bottom: 15px">
+                {{ article.title }}
+            </h2>
+            <div>
+                <p
+                    style="
+                        margin: 20px 0;
+                        color: rgb(88, 98, 84);
+                        line-height: 1.5;
+                    "
+                >
+                    {{ article.article_text }}
+                </p>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px">
+            <div
+                style="display: flex; justify-content: space-between; gap: 10px"
+            >
+                <p>Автор: {{ article.user.login }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Нет статей, соответствующих вашему запросу.</p>
+{% endif %} {% endblock %}

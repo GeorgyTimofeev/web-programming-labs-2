@@ -1,5 +1,5 @@
-{% extends "base.html" %} {# Номер лабораторной #} {% block lab %}Лабораторная
-работа 8 {% endblock %} {# Основной контент: #} {% block main %}
+{% extends "base.html" %} {% block lab %} Лабораторная работа 8 {% endblock %}
+{% block main %}
 <h1>Flask и ORM</h1>
 <div class="container">
     <h2>База знаний</h2>
@@ -59,6 +59,50 @@
         </li>
         <li style="margin: 0 5px; flex: 1">
             <a
+                href="/lab8/search"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition:
+                        background-color 0.3s,
+                        color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                onmouseover="this.style.backgroundColor='#ccc'; this.style.color='#000';"
+                onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"
+                >Поиск</a
+            >
+        </li>
+        <li style="margin: 0 5px; flex: 1">
+            <a
+                href="/lab8/public_articles"
+                style="
+                    display: block;
+                    padding: 12px 20px;
+                    background-color: #f0f0f0;
+                    color: #333;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    text-align: center;
+                    transition:
+                        background-color 0.3s,
+                        color 0.3s;
+                    height: 100%;
+                    border: 1px solid #ccc;
+                "
+                onmouseover="this.style.backgroundColor='#ccc'; this.style.color='#000';"
+                onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"
+                >Публичные статьи</a
+            >
+        </li>
+        <li style="margin: 0 5px; flex: 1">
+            <a
                 href="/lab8/articles"
                 style="
                     display: block;
@@ -76,7 +120,7 @@
                 "
                 onmouseover="this.style.backgroundColor='#ccc'; this.style.color='#000';"
                 onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"
-                >Список статей</a
+                >Мои статьи</a
             >
         </li>
         <li style="margin: 0 5px; flex: 1">
@@ -101,33 +145,11 @@
                 >Добавить статью</a
             >
         </li>
-        <li style="margin: 0 5px; flex: 1">
-            <a
-                href="/lab8/users"
-                style="
-                    display: block;
-                    padding: 12px 20px;
-                    background-color: #f0f0f0;
-                    color: #333;
-                    text-decoration: none;
-                    border-radius: 5px;
-                    text-align: center;
-                    transition:
-                        background-color 0.3s,
-                        color 0.3s;
-                    height: 100%;
-                    border: 1px solid #ccc;
-                "
-                onmouseover="this.style.backgroundColor='#ccc'; this.style.color='#000';"
-                onmouseout="this.style.backgroundColor='#f0f0f0'; this.style.color='#333';"
-                >Просмотр всех пользователей</a
-            >
-        </li>
     </ol>
     <br />
-    {% if login %}
+    {% if current_user.is_authenticated %}
     <h3 style="text-align: center; margin-top: 20px; color: #666">
-        {{ name }} ({{ login }})
+        {{ current_user.login }}
     </h3>
     <div style="text-align: center; margin-top: 10px">
         <a
